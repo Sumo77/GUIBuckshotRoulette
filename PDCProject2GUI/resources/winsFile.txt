@@ -1,0 +1,13 @@
+Summer | 1
+John | 1
+Davor | 2
+Seva | 0
+Cody | 1
+David | 0
+Vlatko | 1
+Matthew | 0
+Maria | 1
+Kiri | 2
+Maya | 3
+S | 0
+D | 1
