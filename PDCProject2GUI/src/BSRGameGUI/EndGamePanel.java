@@ -5,9 +5,10 @@
 package BSRGameGUI;
 
 /**
- *
- * @author Prumm
+ * @author Davor Georgiev
+ * @author Summer Harris
  */
+
 public class EndGamePanel {
     
 }

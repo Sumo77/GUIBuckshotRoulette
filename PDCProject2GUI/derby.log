@@ -1,8 +1,8 @@
-Fri May 30 19:39:51 NZST 2025 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
+Sat May 31 13:40:07 NZST 2025 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Fri May 30 19:39:52 NZST 2025:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0197-2022-0c65-ffffe35164ed 
-on database directory C:\Users\Prumm\OneDrive\Documents\NetBeansProjects\GUIBuckshotRoulette\PDCProject2GUI\BSRScoreDatabase_Ebd with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@70dea4e 
+Sat May 31 13:40:07 NZST 2025:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0197-23ff-0f01-ffffe35164ed 
+on database directory C:\Users\Prumm\OneDrive\Documents\NetBeansProjects\GUIBuckshotRoulette\PDCProject2GUI\BSRWinsDatabase_Ebd with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@70dea4e 
 Loaded from file:/C:/Users/Prumm/OneDrive/Desktop/School/db-derby-10.14.2.0-bin/lib/derby.jar
 java.vendor=Oracle Corporation
 java.runtime.version=21.0.5+9-LTS-239
@@ -12,3 +12,9 @@ os.arch=amd64
 os.version=10.0
 derby.system.home=C:\Users\Prumm\OneDrive\Documents\NetBeansProjects\GUIBuckshotRoulette\PDCProject2GUI
 Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Sat May 31 13:40:24 NZST 2025: Shutting down Derby engine
+----------------------------------------------------------------
+Sat May 31 13:40:24 NZST 2025:
+Shutting down instance a816c00e-0197-23ff-0f01-ffffe35164ed on database directory C:\Users\Prumm\OneDrive\Documents\NetBeansProjects\GUIBuckshotRoulette\PDCProject2GUI\BSRWinsDatabase_Ebd with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@70dea4e 
+----------------------------------------------------------------

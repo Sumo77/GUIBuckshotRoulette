@@ -13,31 +13,30 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DatabaseManager {
-    private static final String USER_NAME = "BuckShotRoulette"; //your DB username
-    private static final String PASSWORD = "pdc"; //your DB password
-    private static final String URL = "jdbc:derby:BSRScoreDatabase_Ebd; create=true";  //url of the DB host
+public class DatabaseManager { // Structure of this Class borrowed from our labs
+    private static final String USER_NAME = "BuckShotRoulette"; // DB Username
+    private static final String PASSWORD = "pdc"; // DB Password
+    private static final String URL = "jdbc:derby:BSRWinsDatabase_Ebd; create=true";  // DB URL - Embedded Mode !
     
     Connection conn;
 
     public DatabaseManager() {
-        establishConnection();
+        establishConnection(); // Connect the database on class reference
     }
 
-    public static void main(String[] args) {
-        DatabaseManager dbManager = new DatabaseManager();
-        System.out.println(dbManager.getConnection());
-    }
+//    public static void main(String[] args) { // No longer needed since inital setup done ! Called from main logic class
+//        DatabaseManager dbManager = new DatabaseManager();
+//        System.out.println(dbManager.getConnection()); // Show Database connection status !
+//    }
 
     public Connection getConnection() {
-        return this.conn;
+        return this.conn; // Get connection information/status
     }
 
-    //Establish connection
-    public void establishConnection() {
+    public void establishConnection() { // Create connection between code and database
         if (this.conn == null) {
             try {
-                conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+                conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD); // Provide database connection details, attempt connection
                 System.out.println(URL + " Get Connected Successfully ....");
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
@@ -45,7 +44,7 @@ public class DatabaseManager {
         }
     }
 
-    public void closeConnections() {
+    public void closeConnections() { // Close / Stop the connection between database and code
         if (conn != null) {
             try {
                 conn.close();
