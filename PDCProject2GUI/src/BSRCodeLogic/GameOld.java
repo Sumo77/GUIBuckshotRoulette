@@ -1,3 +1,15 @@
+/*
+
+
+
+not needed anymore, keeping for reference of old logic
+work on GameModified
+delete later
+
+
+
+*/
+
 package BSRCodeLogic;
 
 import java.util.Scanner;
@@ -6,7 +18,7 @@ import java.util.ArrayList;
 import BSRGameDatabase.DatabaseManager;
 import BSRGameDatabase.WinTableManager;
 
-public class Game { // Main Game Logic - Pulls all together
+public class GameOld { // Main Game Logic - Pulls all together
 
     public static final int MAX_PLAYER_AMOUNT = 4;
     public static final int MAX_ACTION_NUM = 3;
