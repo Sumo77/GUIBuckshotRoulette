@@ -4,8 +4,9 @@
  */
 package BSRGameInterfaces;
 
-import BSRCodeLogic.GameModified;
-import java.awt.Graphics;
+import BSRCodeLogic.*;
+import java.awt.*;
+import java.util.*;
 import javax.swing.JPanel;
 
 /**
@@ -15,10 +16,11 @@ import javax.swing.JPanel;
 
 public class GamePanel extends JPanel {
     private BuckshotRouletteGUI mainGUI; // Import main gui
-    private GameModified game; // Import game logic
+    private GameLogic game; // Import game logic
     //define all interactable buttons / textfields / drawings (start button or textfield for usernames)
+    private int numPlayers; // Get from either Start or game logic later
     
-    public GamePanel(BuckshotRouletteGUI mainGUI, GameModified game) {
+    public GamePanel(BuckshotRouletteGUI mainGUI, GameLogic game) {
         //gui logic
     }
     
@@ -26,4 +28,5 @@ public class GamePanel extends JPanel {
         g.drawString("Game Test", 40, 50);
         repaint();
     }
+    
 }

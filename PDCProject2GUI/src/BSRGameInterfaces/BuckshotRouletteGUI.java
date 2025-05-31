@@ -4,7 +4,7 @@
  */
 package BSRGameInterfaces;
 
-import BSRCodeLogic.GameModified;
+import BSRCodeLogic.GameLogic;
 import javax.swing.*;
 import java.awt.*;
 
@@ -15,7 +15,7 @@ import java.awt.*;
 
 public class BuckshotRouletteGUI extends JFrame {
     
-    private final GameModified game = new GameModified(); //game starts here
+    private final GameLogic game = new GameLogic(); //game starts here
     private final CardLayout panelLayout;//controls panel order
     private final JPanel allPanels;//holds all panels
     
@@ -37,7 +37,7 @@ public class BuckshotRouletteGUI extends JFrame {
         
         frame.setVisible(true);
         
-        panelLayout.show(allPanels, "Start Menu"); //change which panel showing
+        panelLayout.show(allPanels, "Game"); //change which panel showing
     }
     
     public static void main(String[] args) { //main run class

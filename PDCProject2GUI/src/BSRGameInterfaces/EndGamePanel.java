@@ -4,8 +4,8 @@
  */
 package BSRGameInterfaces;
 
-import BSRCodeLogic.GameModified;
-import java.awt.Graphics;
+import BSRCodeLogic.GameLogic;
+import java.awt.*;
 import javax.swing.JPanel;
 
 /**
@@ -15,10 +15,10 @@ import javax.swing.JPanel;
 
 public class EndGamePanel extends JPanel {
     private BuckshotRouletteGUI mainGUI; // Import main gui
-    private GameModified game; // Import game logic
+    private GameLogic game; // Import game logic
     //define all interactable buttons / textfields / drawings (start button or textfield for usernames)
     
-    public EndGamePanel(BuckshotRouletteGUI mainGUI, GameModified game) {
+    public EndGamePanel(BuckshotRouletteGUI mainGUI, GameLogic game) {
         //gui logic
     }
     

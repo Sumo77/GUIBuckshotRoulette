@@ -1,20 +1,13 @@
-Sat May 31 13:40:07 NZST 2025 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Sat May 31 13:40:07 NZST 2025:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0197-23ff-0f01-ffffe35164ed 
-on database directory C:\Users\Prumm\OneDrive\Documents\NetBeansProjects\GUIBuckshotRoulette\PDCProject2GUI\BSRWinsDatabase_Ebd with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@70dea4e 
-Loaded from file:/C:/Users/Prumm/OneDrive/Desktop/School/db-derby-10.14.2.0-bin/lib/derby.jar
+Sat May 31 19:11:03 NZST 2025:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0197-252e-06b0-00001ee0c0c0 
+on database directory C:\Users\Prumm\OneDrive\Documents\NetBeansProjects\GUIBuckshotRoulette\PDCProject2GUI\BSRWinsDatabase_Ebd with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@3f99bd52 
+Loaded from file:/C:/Users/Prumm/OneDrive/Documents/NetBeansProjects/GUIBuckshotRoulette/PDCProject2GUI/lib/derby.jar
 java.vendor=Oracle Corporation
 java.runtime.version=21.0.5+9-LTS-239
-user.dir=C:\Users\Prumm\OneDrive\Desktop\School\db-derby-10.14.2.0-bin
+user.dir=C:\Users\Prumm\OneDrive\Documents\NetBeansProjects\GUIBuckshotRoulette\PDCProject2GUI
 os.name=Windows 11
 os.arch=amd64
 os.version=10.0
-derby.system.home=C:\Users\Prumm\OneDrive\Documents\NetBeansProjects\GUIBuckshotRoulette\PDCProject2GUI
+derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
-----------------------------------------------------------------
-Sat May 31 13:40:24 NZST 2025: Shutting down Derby engine
-----------------------------------------------------------------
-Sat May 31 13:40:24 NZST 2025:
-Shutting down instance a816c00e-0197-23ff-0f01-ffffe35164ed on database directory C:\Users\Prumm\OneDrive\Documents\NetBeansProjects\GUIBuckshotRoulette\PDCProject2GUI\BSRWinsDatabase_Ebd with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@70dea4e 
-----------------------------------------------------------------
