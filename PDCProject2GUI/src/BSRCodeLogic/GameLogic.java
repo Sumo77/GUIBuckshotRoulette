@@ -48,7 +48,7 @@ public class GameLogic { // Main Game Logic - Pulls all together
 
             round.generateRounds(); // Generate Gun Round
             System.out.println("-------------------------------------");
-            round.displayRounds(); // Display Gun Round
+            //round.displayRounds(); // Display Gun Round
 
             playGame(round, powerUps); // Start Game
 

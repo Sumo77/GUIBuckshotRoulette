@@ -23,6 +23,6 @@ public class ReverseOrder extends PowerUp { // Reverse Order Powerup - Child Cla
     @Override
     public void usePowerUp(Player player, Round round, ArrayList<Player> alivePlayers) { // Reverse the order of the players playing
         Collections.reverse(alivePlayers); // Reverse the player list order
-        System.out.println("The order of players has been reversed!");
+        //System.out.println("The order of players has been reversed!");
     }
 }

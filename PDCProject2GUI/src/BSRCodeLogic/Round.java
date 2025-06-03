@@ -37,26 +37,26 @@ public final class Round { // Controls all of the Bullet / Blanks mechanics, eve
         this.currRoundList = roundsList;
     }
     
-    public void displayRounds() { // Display the information of the current rounds (bullets / blanks) to the players
-        //System.out.println(currRoundList); // For testing purposes
-        int num_bullets = 0;
-        int num_blanks = 0;
-        for (int round = 0; round < currRoundList.size(); round++) {
-            String curRound = checkCurrentRound(round);
-            if ("bullet".equals(curRound)) { // If the round is a bullet, count bullet
-                num_bullets += 1;
-            } else if ("blank".equals(curRound)) { // If the round is a blank, count blank
-                num_blanks += 1;
-            }
-        }
-        if (num_bullets == 1) { // Print out statement of info about rounds - Difference in grammar for printing out each statement (bullets/bullet)
-            System.out.println("The Gun is loaded with: " + num_bullets + " bullet and " + num_blanks + " blanks"); 
-        } else if (num_blanks == 1) {
-            System.out.println("The Gun is loaded with: " + num_bullets + " bullets and " + num_blanks + " blank"); 
-        } else {
-            System.out.println("The Gun is loaded with: " + num_bullets + " bullets and " + num_blanks + " blanks");   
-        }
-    }
+//    public void displayRounds() { // Display the information of the current rounds (bullets / blanks) to the players
+//        //System.out.println(currRoundList); // For testing purposes
+//        int num_bullets = 0;
+//        int num_blanks = 0;
+//        for (int round = 0; round < currRoundList.size(); round++) {
+//            String curRound = checkCurrentRound(round);
+//            if ("bullet".equals(curRound)) { // If the round is a bullet, count bullet
+//                num_bullets += 1;
+//            } else if ("blank".equals(curRound)) { // If the round is a blank, count blank
+//                num_blanks += 1;
+//            }
+//        }
+//        if (num_bullets == 1) { // Print out statement of info about rounds - Difference in grammar for printing out each statement (bullets/bullet)
+//            System.out.println("The Gun is loaded with: " + num_bullets + " bullet and " + num_blanks + " blanks"); 
+//        } else if (num_blanks == 1) {
+//            System.out.println("The Gun is loaded with: " + num_bullets + " bullets and " + num_blanks + " blank"); 
+//        } else {
+//            System.out.println("The Gun is loaded with: " + num_bullets + " bullets and " + num_blanks + " blanks");   
+//        }
+//    }
     
     public void removeBlankOrBullet() { // Remove round from round list
         currRoundList.remove(0);
@@ -70,13 +70,14 @@ public final class Round { // Controls all of the Bullet / Blanks mechanics, eve
         return false;
     }
     
-    public void reloadGun() { // Reload Gun with a new set of Rounds
+    public String reloadGun() { // Reload Gun with a new set of Rounds
         if (currRoundList.size() <= 0) { // Check again if round size is 0 (Gun is empty)
-            System.out.println("-------------------------------------");
+//            System.out.println("-------------------------------------");
             generateRounds(); // Generate a new set of rounds
-            System.out.println("All loaded rounds in the Gun depleted; The Gun has been reloaded"); // Print reult of reload
-            displayRounds(); // Display updated info on new set of rounds
+//            System.out.println("All loaded rounds in the Gun depleted; The Gun has been reloaded"); // Print reult of reload
+//            displayRounds(); // Display updated info on new set of rounds
         }
+        return "Complete";
     }
     
     public void bulletShot(Player currentPlayer, Player target) { // Performs the sequenece of events that triggers if bullet is shot from Gun
