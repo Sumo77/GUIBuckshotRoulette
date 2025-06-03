@@ -67,14 +67,14 @@ public final class PowerUpManager { // Controller of all of the PowerUp classes
             player.addPowerUp(newPowerUps.get(powerUp)); // Loop and assign powerup from powerUp list for number of times of missing Power-Ups for the player
         }
         
-        displayPowerUps(player); // Display new power-ups to keep the player informed
+        //displayPowerUps(player); // Display new power-ups to keep the player informed
     }
     
-    public void displayPowerUps(Player player) { // Displays the power-ups of the player
-        System.out.println(player.getUsername() + "'s Power-Ups are: " + player.getPowerUps());
-    }
+//    public void displayPowerUps(Player player) { // Displays the power-ups of the player
+//        System.out.println(player.getUsername() + "'s Power-Ups are: " + player.getPowerUps());
+//    }
     
-    public void usePowerUp(Player player, String powerUpName, Round round, ArrayList<Player> alivePlayerList) {
+    public String usePowerUp(Player player, String powerUpName, Round round, ArrayList<Player> alivePlayerList) {
         PowerUp powerUp = null;
         
         switch(powerUpName) { // Get the selected PowerUp and tigger the correct event
@@ -91,10 +91,12 @@ public final class PowerUpManager { // Controller of all of the PowerUp classes
                 powerUp = new BlindReloadGun(); // Blind Reload Gun - Resets/Reloads all bullets and blanks in the gun randomly
                 break;
             default:
-                System.out.println("You don't have the " + powerUpName + " Power Up!");
+//                System.out.println("You don't have the " + powerUpName + " Power Up!");
+                return "You don't have the " + powerUpName + " Power Up!";
+                
         }
         
-        powerUp.usePowerUp(player, round, alivePlayerList); // Trigger powerUp
-        
+        String message = powerUp.usePowerUp(player, round, alivePlayerList); // Trigger powerUp
+        return message;
     }
 }

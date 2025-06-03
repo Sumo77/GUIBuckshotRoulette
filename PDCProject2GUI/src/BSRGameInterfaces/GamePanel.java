@@ -15,18 +15,39 @@ import javax.swing.JPanel;
  */
 
 public class GamePanel extends JPanel {
-    private BuckshotRouletteGUI mainGUI; // Import main gui
-    private GameLogic game; // Import game logic
+    public BuckshotRouletteGUI mainGUI; // Import main gui
+    public GameLogic game; // Import game logic
+    public Round round; // Import round logic
+    public PowerUpManager powerUps; // Import powerUp logic
+    
     //define all interactable buttons / textfields / drawings (start button or textfield for usernames)
-    private int numPlayers; // Get from either Start or game logic later
+    public ArrayList<Player> alivePlayers; // alivePlayer list, what players are left !
+    public int numPlayers; // Get from game logic
+    public boolean gameLoop;
     
     public GamePanel(BuckshotRouletteGUI mainGUI, GameLogic game) {
-        //gui logic
+        this.mainGUI = mainGUI;
+        this.game = game;
+    }
+    
+    private void prepGame() {
+        round = new Round();
+        round.generateRounds(); // Perhaps in own method ?
+        powerUps = new PowerUpManager();
+        alivePlayers = new ArrayList<>(); // Able to get all players and usernames from this !
+        numPlayers = alivePlayers.size();
+        gameLoop = true; // Reset gameloop to true !
+        
+        // Get current player
+        // Setup table / players (perhaps seperate method)
+        //if (!gameLoop) return; // Stop if game is already over - 
+        // game.player Action - check if game over, then !gameloop ends ! or if exit button pressed, game ends !
+        // COntroller game method needed ^ - pulls together game logic - split into prep, action etc - make sure repaint() at end
+        // Status label - can be the label up top middle, text can be updated ! Such as welcome, next player is, etc.
     }
     
     public void paint(Graphics g) {
         g.drawString("Game Test", 40, 50);
         repaint();
     }
-    
 }

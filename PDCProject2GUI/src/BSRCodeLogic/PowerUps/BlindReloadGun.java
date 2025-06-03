@@ -20,14 +20,10 @@ public class BlindReloadGun extends PowerUp { // Blind Reload Gun Powerup - Chil
     }
 
     @Override
-    public void usePowerUp(Player player, Round round, ArrayList<Player> alivePlayers) { // Reload the Gun with a new random set of rounds, and display
+    public String usePowerUp(Player player, Round round, ArrayList<Player> alivePlayers) { // Reload the Gun with a new random set of rounds, and display
         //System.out.println(round.currRoundList);
         round.currRoundList.clear(); // Erase old list to ensure overrides correctly
         round.generateRounds(); // Generate a new set of rounds
-//        System.out.println("-------------------------------------");
-//        System.out.println("The Gun has been reloaded and re-organized!"); // Reflect change to player
-//        round.displayRounds(); // Display new set of rounds to player
-//        System.out.println("-------------------------------------");
-        //System.out.println(round.currRoundList);
+        return "The Gun has been reloaded and re-organized!"; // Return completion ! (no display rounds - blind !)
     }
 }

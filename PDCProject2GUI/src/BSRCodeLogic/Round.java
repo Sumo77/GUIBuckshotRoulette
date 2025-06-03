@@ -71,25 +71,24 @@ public final class Round { // Controls all of the Bullet / Blanks mechanics, eve
     }
     
     public String reloadGun() { // Reload Gun with a new set of Rounds
-        if (currRoundList.size() <= 0) { // Check again if round size is 0 (Gun is empty)
-//            System.out.println("-------------------------------------");
+        if (currRoundList.isEmpty()) { // Check again if round size is 0 / empty (Gun is empty)
             generateRounds(); // Generate a new set of rounds
-//            System.out.println("All loaded rounds in the Gun depleted; The Gun has been reloaded"); // Print reult of reload
-//            displayRounds(); // Display updated info on new set of rounds
+            return "All loaded rounds in the Gun depleted; The Gun has been reloaded"; // Display message and rounds
         }
-        return "Complete";
+        return null; // No need to reload ! - check not passed
     }
     
     public void bulletShot(Player currentPlayer, Player target) { // Performs the sequenece of events that triggers if bullet is shot from Gun
         if (currentPlayer.doubleDamage == true) { // If player has doubleDamage,
             target.removeHealth(NORMAL_BULLET_DMG * 2); // Double the damage the target takes
-            System.out.println(target.getUsername() + " takes " + NORMAL_BULLET_DMG * 2 + " damage!"); // Print result of damage !
             currentPlayer.doubleDamage = false;
+            removeBlankOrBullet(); // Remove bullet from the Gun (it has been shot)
+            //return target.getUsername() + " takes " + NORMAL_BULLET_DMG * 2 + " damage!"; // Print result of damage !
         } else { // Normal damage
             target.removeHealth(NORMAL_BULLET_DMG); // Make the target sustain normal damage
-            System.out.println(target.getUsername() + " takes " + NORMAL_BULLET_DMG + " damage!"); // Print result of damage !
+            removeBlankOrBullet(); // Remove bullet from the Gun (it has been shot)
+            //return target.getUsername() + " takes " + NORMAL_BULLET_DMG + " damage!"; // Print result of damage !
         }
-        removeBlankOrBullet(); // Remove bullet from the Gun (it has been shot)
     }
     
     public String checkCurrentRound(int round) { // Check whetehr the current round is a bullet or a blank

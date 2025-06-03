@@ -26,6 +26,6 @@ public abstract class PowerUp { // Template Class for all of the powerups - Pare
     }
     
     // Method to be overrided - The PowerUp's ability
-    public abstract void usePowerUp(Player player, Round round, ArrayList<Player> alivePlayerList);
+    public abstract String usePowerUp(Player player, Round round, ArrayList<Player> alivePlayerList);
     
 }
