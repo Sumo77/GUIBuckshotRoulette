@@ -356,6 +356,7 @@ public class GameLogic { // Main Game Logic - Pulls all together
           winManager.displayWinsTable();
 //        System.out.println("+-----------------------------------+");
     }
+}
 
 //    private static boolean commenceGameEnd(Scanner scan) { // Ask for a restart or exit program, reload gun and powerups if restart and delete previous
 //        System.out.println("Would you like to reset the table for a different match? (Play again?)");
