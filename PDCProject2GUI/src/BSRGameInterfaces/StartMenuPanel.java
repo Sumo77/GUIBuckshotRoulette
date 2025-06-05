@@ -6,12 +6,10 @@ package BSRGameInterfaces;
 
 import BSRCodeLogic.GameLogic;
 import java.awt.*;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 /**
  * @author Davor Georgiev
@@ -24,35 +22,40 @@ public class StartMenuPanel extends JPanel {
     //define all interactable buttons / textfields / drawings (start button or textfield for usernames)
     private JButton startButton;
     private JButton exitButton;
-    private JLabel title;
-    private JLabel hintLabel;
     
     public StartMenuPanel(BuckshotRouletteGUI mainGUI, GameLogic game) {
         //gui logic
-        setLayout(new BorderLayout());
+        setLayout(null);
         
-        title = new JLabel("Buckshot Roulette", SwingConstants.CENTER);
-        title.setFont(new Font("Serif", Font.BOLD, 24));
-        add(title, BorderLayout.NORTH);
-        
-        JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 10, 10));
         startButton = new JButton("Start");
+        startButton.setBounds(375, 300, 100, 40);
+        
+        
+        
         exitButton = new JButton("Exit");
+        exitButton.setBounds(375, 400, 100, 40);
+        exitButton.addActionListener((ActionEvent e) -> {
+            System.exit(0); // Exit the application
+        });
         
-        buttonPanel.add(startButton);
-        buttonPanel.add(exitButton);
-        add(buttonPanel, BorderLayout.CENTER);
-        
-        hintLabel = new JLabel("Created by Davor Georgiev & Summer Harris", SwingConstants.CENTER);
-        hintLabel.setFont(new Font("Arial", Font.ITALIC, 12));
-        add(hintLabel, BorderLayout.SOUTH);
-        
-        startButton.addActionListener(e -> System.out.println("Game Started!"));
-        exitButton.addActionListener(e -> System.exit(0));
-        
+
+        // Add button to panel
+        add(startButton);
+        add(exitButton);
     }
     
-    public void paint(Graphics g) {
+    
+    
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        // Display title
+        g.setFont(new Font("Arial", Font.BOLD, 50));
+        g.drawString("Buckshot Roulette", 200, 100);
+        // Display header
+        g.setFont(new Font("Arial", Font.BOLD, 24));
+        g.drawString("Welcome to Buckshot Roulette!", 250, 200);
+        // Display creators
+        g.setFont(new Font("Arial", Font.PLAIN, 15));
+        g.drawString("Created by Summer Harris and Davor Georgiev", 250, 700);
     }
 }

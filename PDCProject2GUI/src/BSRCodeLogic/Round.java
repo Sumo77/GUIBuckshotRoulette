@@ -37,27 +37,6 @@ public final class Round { // Controls all of the Bullet / Blanks mechanics, eve
         this.currRoundList = roundsList;
     }
     
-//    public void displayRounds() { // Display the information of the current rounds (bullets / blanks) to the players
-//        //System.out.println(currRoundList); // For testing purposes
-//        int num_bullets = 0;
-//        int num_blanks = 0;
-//        for (int round = 0; round < currRoundList.size(); round++) {
-//            String curRound = checkCurrentRound(round);
-//            if ("bullet".equals(curRound)) { // If the round is a bullet, count bullet
-//                num_bullets += 1;
-//            } else if ("blank".equals(curRound)) { // If the round is a blank, count blank
-//                num_blanks += 1;
-//            }
-//        }
-//        if (num_bullets == 1) { // Print out statement of info about rounds - Difference in grammar for printing out each statement (bullets/bullet)
-//            System.out.println("The Gun is loaded with: " + num_bullets + " bullet and " + num_blanks + " blanks"); 
-//        } else if (num_blanks == 1) {
-//            System.out.println("The Gun is loaded with: " + num_bullets + " bullets and " + num_blanks + " blank"); 
-//        } else {
-//            System.out.println("The Gun is loaded with: " + num_bullets + " bullets and " + num_blanks + " blanks");   
-//        }
-//    }
-    
     public void removeBlankOrBullet() { // Remove round from round list
         currRoundList.remove(0);
     }
@@ -91,8 +70,8 @@ public final class Round { // Controls all of the Bullet / Blanks mechanics, eve
         }
     }
     
-    public String checkCurrentRound(int round) { // Check whetehr the current round is a bullet or a blank
-        char curRound = (char) currRoundList.get(round);
+    public String checkCurrentRound(int round, ArrayList roundList) { // Check whetehr the current round is a bullet or a blank
+        char curRound = (char) roundList.get(round);
         if (curRound == liveRound) {
             return "bullet";
         } else if (curRound == blankRound) {
@@ -100,6 +79,22 @@ public final class Round { // Controls all of the Bullet / Blanks mechanics, eve
         }
         return null;
     }
-
     
+    public ArrayList organiseRounds() { // Organise them into a new array, that displays them to be bullets, then blanks, order is unknown
+        ArrayList currRounds = new ArrayList();
+        
+        for (int r = 0; r < currRoundList.size(); r++) {
+            String curRound = checkCurrentRound(r, currRoundList);
+            if ("bullet".equals(curRound)) { // If the round is a bullet, show
+                currRounds.add(liveRound);
+            }
+        }
+        for (int r = 0; r < currRoundList.size(); r++) {
+            String curRound = checkCurrentRound(r, currRoundList);
+            if ("blank".equals(curRound)) { // If the round is a bullet, show
+                currRounds.add(blankRound);
+            }
+        }
+        return currRounds;
+    }
 }

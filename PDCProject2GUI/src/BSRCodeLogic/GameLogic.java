@@ -22,15 +22,14 @@ public class GameLogic { // Main Game Logic - Pulls all together
     public static final int MAX_PLAYER_AMOUNT = 4;
     public static final int MAX_ACTION_NUM = 3;
     
-    public static DatabaseManager dbManager = new DatabaseManager(); // Create connection
-    public static WinTableManager winManager = new WinTableManager(dbManager); // Connect to winsTable
-    
     public static ArrayList<Player> alivePlayerList = new ArrayList<>(); // player list - only contains alive / active 
     public static int numPlayers;
     public int currPlayerNum;
     
     public boolean winner;
     
+    public static DatabaseManager dbManager = new DatabaseManager(); // Create connection
+    public static WinTableManager winManager = new WinTableManager(dbManager); // Connect to winsTable
     
     public static void main(String[] args) {
         
@@ -56,8 +55,20 @@ public class GameLogic { // Main Game Logic - Pulls all together
         }
     }
     
+    public void makePlayersTest() { // TEST GAME ONLY - REMOVE LATER
+        Player player1 = new Player("Player 1", winManager);
+        alivePlayerList.add(player1);
+        Player player2 = new Player("Player 2", winManager);
+        alivePlayerList.add(player2);
+        Player player3 = new Player("Player 3", winManager);
+        alivePlayerList.add(player3);
+        Player player4 = new Player("Player 4", winManager);
+        alivePlayerList.add(player4);
+    }
     
-    public static ArrayList<Player> getAlivePlayers() {
+    
+    public ArrayList<Player> getAlivePlayers() {
+        makePlayersTest(); // Remove Later
         return alivePlayerList;
     }
 
@@ -247,7 +258,7 @@ public class GameLogic { // Main Game Logic - Pulls all together
         // printTargetOptions(currentPlayer);
 
         
-        String bulletOrBlank = round.checkCurrentRound(0); // check round type
+        String bulletOrBlank = round.checkCurrentRound(0, round.currRoundList); // check round type
 
         if ("bullet".equals(bulletOrBlank)) { // if it is a bullet
             // System.out.println("-------------------------------------");
@@ -319,24 +330,24 @@ public class GameLogic { // Main Game Logic - Pulls all together
         }
     }
 
-    private static void powerUpAction(Player currentPlayer, PowerUpManager powerUps, Round round) { // Take player input on which power up to use, check if player has powerups left and error handle spelling
-        ArrayList<String> currPowerUps = currentPlayer.getPowerUps();
-        if (currPowerUps.isEmpty()) { // No powerups to use !
-            System.out.println("You have no Power-Ups left!");
-        } else { // Give option to choose and use powerup
-            //powerUps.displayPowerUps(currentPlayer);
-            System.out.println("Which do you wish to use? (Please type the full name of the Power-Up as displayed above):");
-            Scanner scan = new Scanner(System.in);
-            String chosenPower = scan.nextLine();
-
-            if (currentPlayer.getPowerUps().contains(chosenPower)) { // if power exists, use it
-                powerUps.usePowerUp(currentPlayer, chosenPower, round, alivePlayerList);
-                currentPlayer.usePowerUp(chosenPower);
-            } else { // No exist :(
-                System.out.println("Input does not match an existing Power-Up. Please ensure you type the full name of the Power-Up as displayed above.");
-            }
-        }
-    }
+//    private String powerUpAction(Player currentPlayer, PowerUpManager powerUps, Round round) { // Take player input on which power up to use, check if player has powerups left and error handle spelling
+//        ArrayList<String> currPowerUps = currentPlayer.getPowerUps();
+//        if (currPowerUps.isEmpty()) { // No powerups to use !
+//            //System.out.println("You have no Power-Ups left!");
+//        } else { // Give option to choose and use powerup
+//            //powerUps.displayPowerUps(currentPlayer);
+//            System.out.println("Which do you wish to use? (Please type the full name of the Power-Up as displayed above):");
+//            Scanner scan = new Scanner(System.in);
+//            String chosenPower = scan.nextLine();
+//
+//            if (currentPlayer.getPowerUps().contains(chosenPower)) { // if power exists, use it
+//                powerUps.usePowerUp(currentPlayer, chosenPower, round, alivePlayerList);
+//                currentPlayer.usePowerUp(chosenPower);
+//            } else { // No exist :(
+//                //System.out.println("Input does not match an existing Power-Up. Please ensure you type the full name of the Power-Up as displayed above.");
+//            }
+//        }
+//    }
 
     public static boolean isWinner() { // Return condition for a player to classify as a winner
         if (alivePlayerList.size() == 1) {

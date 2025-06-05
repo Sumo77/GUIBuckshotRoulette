@@ -22,7 +22,7 @@ public class BuckshotRouletteGUI extends JFrame {
     public BuckshotRouletteGUI() {
         JFrame frame = new JFrame("Buckshot Roulette");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(700, 600);//game size
+        frame.setSize(850, 750);//game size
         
         panelLayout = new CardLayout();
         allPanels = new JPanel(panelLayout);
