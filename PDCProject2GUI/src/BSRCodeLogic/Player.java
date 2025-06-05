@@ -15,7 +15,7 @@ import BSRGameDatabase.WinTableManager;
 public class Player { // Controls all Player related mechanics, events and information
 
     // Initialise Constants and Variables
-    public int MAX_HEALTH = 4;
+    public int MAX_HEALTH = 3;
     private final String playerName;
     private int health;
     private int wins;
