@@ -162,7 +162,7 @@ public class GameLogic { // Main Game Logic - Pulls all together
         return true; // That username is not taken, all good.
     }
 
-    private static ArrayList<String> assignPlayerPowerUps(Player player, PowerUpManager powerUps) {  // Assign a set of powerups to each player 
+    public static ArrayList<String> assignPlayerPowerUps(Player player, PowerUpManager powerUps) {  // Assign a set of powerups to each player 
         ArrayList<String> playerPowerUps = powerUps.recievePowerUps();
         
         for (String powerUp : playerPowerUps) {

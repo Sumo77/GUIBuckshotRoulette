@@ -16,8 +16,8 @@ import java.awt.*;
 public class BuckshotRouletteGUI extends JFrame {
     
     private final GameLogic game = new GameLogic(); //game starts here
-    private final CardLayout panelLayout;//controls panel order
-    private final JPanel allPanels;//holds all panels
+    public final CardLayout panelLayout;//controls panel order
+    public final JPanel allPanels;//holds all panels
     
     public BuckshotRouletteGUI() {
         JFrame frame = new JFrame("Buckshot Roulette");
@@ -39,6 +39,11 @@ public class BuckshotRouletteGUI extends JFrame {
         
         panelLayout.show(allPanels, "Start Menu"); //change which panel showing at beginning
     }
+    
+    public void showPanel(String panelName) {
+        panelLayout.show(allPanels, panelName);
+    }
+
     
     public static void main(String[] args) { //main run class
         SwingUtilities.invokeLater(() -> new BuckshotRouletteGUI());
