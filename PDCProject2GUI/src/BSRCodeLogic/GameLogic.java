@@ -68,7 +68,11 @@ public class GameLogic { // Main Game Logic - Pulls all together
     
     
     public ArrayList<Player> getAlivePlayers() {
-        makePlayersTest(); // Remove Later
+        return alivePlayerList;
+    }
+    
+    public ArrayList<Player> makeAlivePlayers() {
+        makePlayersTest();
         return alivePlayerList;
     }
 
@@ -179,15 +183,6 @@ public class GameLogic { // Main Game Logic - Pulls all together
             while (alivePlayerList.size() > 1 && currPlayer < alivePlayerList.size()) { // Loop for each players turn
                 
                 Player currentPlayer = alivePlayerList.get(currPlayer);
-                
-//                System.out.println("-------------------------------------");
-//                printHealth();
-//                System.out.println("-------------------------------------");
-//
-//                System.out.println(currentPlayer.getUsername() + "'s Turn!");
-//                System.out.println("-------------------------------------");
-//                
-//                playerTurn(currentPlayer, round, powerUps); // Start player turn
 
                 currPlayer = alivePlayerList.indexOf(currentPlayer) + 1; // Update player order before continuing to next player (incase reversed or changed)
             }
@@ -195,139 +190,56 @@ public class GameLogic { // Main Game Logic - Pulls all together
         
         announceWinner();
     }
-    
-//    public static void printHealth() { // Print health of alive players
-//        for (Player player : alivePlayerList) {
-//            System.out.println(player.getUsername() + " || Health : " + player.checkHealth());
-//        }
-//    }
-    
-//    private static void playerTurn(Player currentPlayer, Round round, PowerUpManager powerUps) { // Commence players action of choice for their turn
-//        Scanner scan = new Scanner(System.in);
-//        boolean turnComplete = false;
-//
-//        while (!turnComplete) {
-//            System.out.println("Choose an action");
-//            System.out.println("-------------------------------------");
-//            System.out.println("Type the corresponding number to: (1) Shoot, (2) Power-Up");
-//            System.out.println("-------------------------------------");
-//
-//            int action = getPlayerAction(scan, MAX_ACTION_NUM); // Check valid action (input)
-//            turnComplete = performPlayerAction(currentPlayer, action, round, powerUps); // Commence action
-//        }
-//    }
 
-//    private static int getPlayerAction(Scanner scan, int actionNum) { // Return the action a player chose with error handling
-//        int action = 0;
-//        
-//        boolean validAction = false;
-//        
-//        while (!validAction) {
-//            if (scan.hasNextInt()) {
-//                action = scan.nextInt();
-//                scan.nextLine();
-//                
-//                if (action >= 1 && action <= actionNum) {
-//                    validAction = true;
-//                } else {
-//                    System.out.println("Invalid number. Please enter a number corresponding to the action you wish to choose.");
-//                }
-//            } else {
-//                System.out.println("Invalid input. Please enter a number corresponding to the action you wish to choose.");
-//                scan.nextLine();
-//            }
-//        }
-//        
-//        return action;
-//    }
-
-//    private static boolean performPlayerAction(Player currentPlayer, int action, Round round, PowerUpManager powerUps) { // Commence either shooting or powerUp action
-//        switch (action) {
-//            case 1:
-//                return shootAction(currentPlayer, round);
-//            case 2:
-//                powerUpAction(currentPlayer, powerUps, round);
-//                return false;
-//            default:
-//                return false;
-//        }
-//    }
-
-    private static boolean shootAction(Player currentPlayer, Player targetPlayer, Round round) { // Check whether player shoots a bullet or a blank and proceed accordingly
-        // System.out.println("Please type the corresponding number of the target you wish to shoot: ");
-        // printTargetOptions(currentPlayer);
-
-        
+    public ShootResult shootAction(Player currentPlayer, Player targetPlayer, Round round) { // Check whether player shoots a bullet or a blank and proceed accordingly
         String bulletOrBlank = round.checkCurrentRound(0, round.currRoundList); // check round type
-
+        String shot;
+        boolean deathResult = false;
+        boolean reloadResult;
+        
         if ("bullet".equals(bulletOrBlank)) { // if it is a bullet
-            // System.out.println("-------------------------------------");
-            // System.out.println("BANG! The Gun has fired a bullet at " + targetPlayer.getUsername());
             round.bulletShot(currentPlayer, targetPlayer);
-            checkReloadAll(round, new PowerUpManager());
-            deathCheck(targetPlayer);
-            return true;
+            
+            reloadResult = checkReloadAll(round, new PowerUpManager());
+            
+            deathResult = deathCheck(targetPlayer);
+            
+            shot = "bullet";
             
         } else { // if it is a blank
-            // System.out.println("CHK-- The Gun fired a blank round at " + targetPlayer.getUsername());
             round.removeBlankOrBullet();
-            checkReloadAll(round, new PowerUpManager());
+            
+            reloadResult = checkReloadAll(round, new PowerUpManager());
+            
             if (currentPlayer.doubleDamage) {
                 currentPlayer.doubleDamage = false;
             }
-            if (targetPlayer == currentPlayer) {
-                // System.out.println("As you have have successfully fired a blank at yourself, you may continue your turn:");
-            }
-            return !targetPlayer.equals(currentPlayer);
-        }
-    }
-    
-//    public static void printTargetOptions(Player currentPlayer) { // Display players able to be shot/targetted
-//        for (int alivePlayerNum = 0; alivePlayerNum < alivePlayerList.size(); alivePlayerNum++) {
-//            Player curAlivePlayer = alivePlayerList.get(alivePlayerNum);
-//            System.out.println((alivePlayerNum + 1) + ": " + curAlivePlayer.getUsername() + (currentPlayer.equals(curAlivePlayer) ? " (Yourself)" : ""));
-//        }
-//    }
-    
-    public static Player getTarget() { // Target a player to shoot
-        Scanner scan = new Scanner(System.in);
-        int targetPlayerNum = 0;
-        
-        boolean validTarget = false;
-        
-        while (!validTarget) {
             
-            if (scan.hasNextInt()) {
-                targetPlayerNum = scan.nextInt();
-                scan.nextLine();
+            if (targetPlayer == currentPlayer) {
+                shot = "blank-self";
                 
-                if (targetPlayerNum > 0 && targetPlayerNum <= alivePlayerList.size()) {
-                    validTarget = true;
-                } else {
-                    System.out.println("Invalid input. Please enter a valid number corresponding to the player you wish to target, as displayed above.");
-                }
             } else {
-                System.out.println("Invalid input. Please enter a valid number corresponding to the player you wish to target, as displayed above.");
-                scan.nextLine();
+                shot = "blank-other";
             }
         }
-        return alivePlayerList.get(targetPlayerNum - 1); // List Index is 1 back from the choice of the player
+        
+        return new ShootResult(shot, deathResult, reloadResult); // return all logic !
     }
-    
-    public static void checkReloadAll(Round round, PowerUpManager powerUps) { // Reload gun and powerups
+
+    public boolean checkReloadAll(Round round, PowerUpManager powerUps) { // Reload gun and powerups
         if (round.checkReload()) { // If gun was reloaded, reload powerups
-            System.out.println("-------------------------------------");
-            System.out.println("All players Power-Ups are stocked to full.");
             powerUps.checkRestock(alivePlayerList);
+            return true;
         }
+        return false;
     }
     
-    public static void deathCheck(Player curTargetPlayer) { // Check if player's health is at 0 (dead)
+    public boolean deathCheck(Player curTargetPlayer) { // Check if player's health is at 0 (dead)
         if (curTargetPlayer.checkHealth() <= 0) {
             alivePlayerList.remove(curTargetPlayer);
-            System.out.println("-------------------------------------");
-            System.out.println(curTargetPlayer.getUsername() + " has died!");
+            return true;
         }
+        return false;
     }
 
 //    private String powerUpAction(Player currentPlayer, PowerUpManager powerUps, Round round) { // Take player input on which power up to use, check if player has powerups left and error handle spelling
