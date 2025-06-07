@@ -49,6 +49,7 @@ public class GamePanel extends JPanel {
     // Labels / Text Field / Buttons - GUIS!
     int TABLE_DIAM = 250; // Everything is centred around the size of the table
     public JLabel mainInfoLabel; // call infoLabel.setText ...
+    public JPanel buttonLayout;
     public JButton shootButton; // shootButton
     public JButton powerUpButton; // Powerup Button
     
@@ -83,7 +84,7 @@ public class GamePanel extends JPanel {
         alivePlayers = game.makeAlivePlayers(); // Able to get all players and usernames from this !
         numPlayers = alivePlayers.size();
         
-        assignPositionsToPlayers();  // <-- Assign positions once here
+        assignPositionsToPlayers();  // Assign positions once here
         
         // Get current player
         currentPlayerNum = 0; // Start with first player !
@@ -95,6 +96,7 @@ public class GamePanel extends JPanel {
         this.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (targettingPlayer) { // If player is going to be selected ! Targetting mode
+                    mainInfoLabel.setText("Select a player to shoot !");
                     shootTargetClick(e.getPoint());
                 }
             }
@@ -118,12 +120,15 @@ public class GamePanel extends JPanel {
         // Create Table
         g.setColor(Color.ORANGE);
         g.fillOval((getWidth() - TABLE_DIAM) / 2, (getHeight() - TABLE_DIAM) / 2, TABLE_DIAM, TABLE_DIAM);
-        
-        // Create Gun ! - change orientation based on player turn
     }
     
     public void setupPlayers(Graphics g) {
         alivePlayers = game.getAlivePlayers();
+        
+        int playerSize = 60;
+        int tableX = getWidth() / 2; // of window
+        int tableY = getHeight() / 2;// of window
+        int tableDist = TABLE_DIAM - playerSize; // Palyer dist from table
 
         for (Player player : alivePlayers) {
             PlayerPosition playerPos = playerPositions.get(player);
@@ -131,14 +136,9 @@ public class GamePanel extends JPanel {
 
             int x = 0;
             int y = 0;
-            int playerSize = 60;
-            int tableX = getWidth() / 2;
-            int tableY = getHeight() / 2;
-            int tableDist = 175; // Distance from table
             
             switch (playerPos) {
-                case LEFT_POS:
-                    {
+                case LEFT_POS: {
                         // Player 1 - Left
                         x = tableX - tableDist - playerSize / 2;
                         y = tableY - playerSize / 2;
@@ -154,8 +154,7 @@ public class GamePanel extends JPanel {
                         break;
                     }
                     
-                case RIGHT_POS:
-                    {
+                case RIGHT_POS: {
                         // Player 2 - Right
                         x = tableX + tableDist - playerSize / 2;
                         y = tableY - playerSize / 2;
@@ -171,8 +170,7 @@ public class GamePanel extends JPanel {
                         break;
                     }
                     
-                case BOTTOM_POS:
-                    {
+                case BOTTOM_POS: {
                         // Player 3 - Bottom
                         x = tableX - playerSize / 2;
                         y = tableY + tableDist - playerSize / 2;
@@ -188,8 +186,7 @@ public class GamePanel extends JPanel {
                         break;
                     }
                     
-                case TOP_POS:
-                    {
+                case TOP_POS: {
                         // Player 4 - Top
                         x = tableX - playerSize / 2;
                         y = tableY - tableDist - playerSize / 2;
@@ -212,16 +209,17 @@ public class GamePanel extends JPanel {
         mainInfoLabel = new JLabel();
         mainInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
         mainInfoLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        mainInfoLabel.setOpaque(true);
         mainInfoLabel.setBackground(Color.GRAY);
         this.add(mainInfoLabel);
     }
     
     public void setupShootButton() {
         shootButton = new JButton("Shoot!");
-        shootButton.setBackground(Color.GRAY);
+        
         shootButton.setHorizontalAlignment(SwingConstants.CENTER);
-        shootButton.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15)); 
+        shootButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        
+        shootButton.setBackground(Color.GRAY);
         shootButton.addActionListener(e -> {
             mainInfoLabel.setText("Select a player to shoot!");
             targettingPlayer = true;
@@ -230,9 +228,9 @@ public class GamePanel extends JPanel {
     
     public void setupPowerUpButton() {
         powerUpButton = new JButton("PowerUps");
+        powerUpButton.setHorizontalAlignment(SwingConstants.CENTER);
+        powerUpButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         powerUpButton.setBackground(Color.GRAY);
-        shootButton.setHorizontalAlignment(SwingConstants.CENTER);
-        shootButton.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15)); 
         powerUpButton.addActionListener(e -> {
             // Check for if there is powerups !
             if (!currentPlayer.getPowerUps().isEmpty()) {
@@ -242,6 +240,14 @@ public class GamePanel extends JPanel {
             }
         });
     }
+    
+//    public void buttonLayout() {
+//        buttonLayout = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10)); // Horizontal spacing
+//        buttonLayout.add(shootButton);
+//        buttonLayout.add(powerUpButton);
+//        this.add(buttonLayout, BorderLayout.SOUTH);
+//        buttonLayout.setVisible(false);
+//    }
     
     public void displayHearts(Player player, int x, int y, Graphics g) {
         int playerHealth = player.checkHealth();
@@ -315,17 +321,17 @@ public class GamePanel extends JPanel {
             return; // end game ~!
         }
         
-        mainInfoLabel.setText("It's " + currentPlayer.getUsername() + "'s turn! Choose to Shoot or use a Powerup:");
-        
-        repaint();
-        
         if (!turnComplete) {
-            showActionButtons(); // Shoot or Action
+            mainInfoLabel.setText("It's " + currentPlayer.getUsername() + "'s turn! Choose to Shoot or use a Powerup:");
+            showActionButtons();
+            
         } else {
             // end turn ! next turn !
             turnComplete = false;
             nextPlayerTurn();
         }
+        
+        repaint();
     }
     
     public void showActionButtons() {
@@ -335,7 +341,6 @@ public class GamePanel extends JPanel {
         if (powerUpButton != null) {
             this.add(powerUpButton);
         }
-        repaint();
     }
     
     public void removeActionButtons() {
@@ -345,8 +350,8 @@ public class GamePanel extends JPanel {
         if (powerUpButton != null) {
             this.remove(powerUpButton);
         }
-        repaint();
     }
+
     
     
     public void shootTargetClick(Point playerClick) { // handle player targetting shot / click
@@ -356,12 +361,12 @@ public class GamePanel extends JPanel {
             
             if (currPlayerHitBox.contains(playerClick)) {
                 targettingPlayer = false;
-                shootPlayer(playerHitBox.getKey()); // maybe return ? look at whats returned to shootAction()
+                shootPlayer(playerHitBox.getKey());
             }
         }
     }
     
-    public boolean shootPlayer(Player targetPlayer) { // pass from click to the logic/gui of the shot
+public boolean shootPlayer(Player targetPlayer) { // pass from click to the logic/gui of the shot
         ShootResult resultShot = game.shootAction(currentPlayer, targetPlayer, round);
         
         if ("bullet".equals(resultShot.shot)) {
@@ -377,7 +382,6 @@ public class GamePanel extends JPanel {
             turnComplete = false;
         }   
         
-        removeActionButtons(); // Remove buttons for now to target player !
         repaint();
         
         if (resultShot.playerDied) {
@@ -385,30 +389,24 @@ public class GamePanel extends JPanel {
                     mainInfoLabel.setText(targetPlayer.getUsername() + " has died!");
                     playerHitBoxes.remove(targetPlayer);
                     alivePlayers = game.getAlivePlayers();
+                    repaint();
             });
             playerDied.setRepeats(false);
             playerDied.start();
         }
         
         if (resultShot.roundReloaded) {
-            seeRounds = true;
-            
-            Timer reloadedShot = new Timer(3000, e -> {
-                mainInfoLabel.setText("The Gun has been reloaded with a new set of unordered rounds:");
+            Timer reloadedShot = new Timer(2000, e -> {
+                    mainInfoLabel.setText("The Gun has been reloaded and PowerUps for each player have been restocked");
+                    seeRounds = true;
+                    repaint();
             });
             reloadedShot.setRepeats(false);
             reloadedShot.start();
-            
-            Timer powerUpsNotice = new Timer(3000, e -> {
-                mainInfoLabel.setText("Powerup's for each player have also been refreshed");
-            });
-            powerUpsNotice.setRepeats(false);
-            powerUpsNotice.start();
         }
         
         Timer shootAction = new Timer(3000, e -> {
             playTurn();
-        
         });
         shootAction.setRepeats(false);
         shootAction.start();
@@ -433,6 +431,7 @@ public class GamePanel extends JPanel {
         currentPlayerNum = (currentPlayerNum + 1) % numPlayers; // Change to next player !
         currentPlayer = alivePlayers.get(currentPlayerNum);
         
+        turnComplete = false;
         playTurn();
     }
     
