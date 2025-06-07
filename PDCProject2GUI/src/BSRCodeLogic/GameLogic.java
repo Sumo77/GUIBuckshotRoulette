@@ -56,14 +56,23 @@ public class GameLogic { // Main Game Logic - Pulls all together
     }
     
     public void makePlayersTest() { // TEST GAME ONLY - REMOVE LATER
-        Player player1 = new Player("Player 1", winManager);
+        PowerUpManager powerUps = new PowerUpManager();
+        
+        Player player1 = new Player("Davor", winManager);
         alivePlayerList.add(player1);
-        Player player2 = new Player("Player 2", winManager);
+        assignPlayerPowerUps(player1, powerUps);
+        
+        Player player2 = new Player("Seva", winManager);
         alivePlayerList.add(player2);
-        Player player3 = new Player("Player 3", winManager);
+        assignPlayerPowerUps(player2, powerUps);
+        
+        Player player3 = new Player("Cody", winManager);
         alivePlayerList.add(player3);
-        Player player4 = new Player("Player 4", winManager);
+        assignPlayerPowerUps(player3, powerUps);
+        
+        Player player4 = new Player("Summa", winManager);
         alivePlayerList.add(player4);
+        assignPlayerPowerUps(player4, powerUps);
     }
     
     
@@ -241,25 +250,13 @@ public class GameLogic { // Main Game Logic - Pulls all together
         }
         return false;
     }
-
-//    private String powerUpAction(Player currentPlayer, PowerUpManager powerUps, Round round) { // Take player input on which power up to use, check if player has powerups left and error handle spelling
-//        ArrayList<String> currPowerUps = currentPlayer.getPowerUps();
-//        if (currPowerUps.isEmpty()) { // No powerups to use !
-//            //System.out.println("You have no Power-Ups left!");
-//        } else { // Give option to choose and use powerup
-//            //powerUps.displayPowerUps(currentPlayer);
-//            System.out.println("Which do you wish to use? (Please type the full name of the Power-Up as displayed above):");
-//            Scanner scan = new Scanner(System.in);
-//            String chosenPower = scan.nextLine();
-//
-//            if (currentPlayer.getPowerUps().contains(chosenPower)) { // if power exists, use it
-//                powerUps.usePowerUp(currentPlayer, chosenPower, round, alivePlayerList);
-//                currentPlayer.usePowerUp(chosenPower);
-//            } else { // No exist :(
-//                //System.out.println("Input does not match an existing Power-Up. Please ensure you type the full name of the Power-Up as displayed above.");
-//            }
-//        }
-//    }
+    
+    public String powerUpAction(Player currentPlayer, String chosenPower, PowerUpManager powerUps, Round round) {
+        String powerUpResult = powerUps.usePowerUp(currentPlayer, chosenPower, round, alivePlayerList);
+        currentPlayer.usePowerUp(chosenPower);
+        return powerUpResult;
+    }
+    
 
     public static boolean isWinner() { // Return condition for a player to classify as a winner
         if (alivePlayerList.size() == 1) {
@@ -271,29 +268,7 @@ public class GameLogic { // Main Game Logic - Pulls all together
     
     private static void announceWinner() { // Print out the winner of the match
         Player winner = alivePlayerList.get(0);
-//        System.out.println("+-----------------------------------+");
-//        System.out.println(winner.getUsername() + " is the (sole) winner!");
-//        winner.updateWins(1);
-//        System.out.println("+-----------------------------------+");
-//        System.out.println("Winner's Leaderboard:");
-          winManager.displayWinsTable();
-//        System.out.println("+-----------------------------------+");
+        winner.updateWins(1);
+        winManager.displayWinsTable();
     }
 }
-
-//    private static boolean commenceGameEnd(Scanner scan) { // Ask for a restart or exit program, reload gun and powerups if restart and delete previous
-//        System.out.println("Would you like to reset the table for a different match? (Play again?)");
-//        System.out.println("Type the corresponding number to: (1) Exit, (2) Play again");
-//
-//        int choice = getPlayerAction(scan, 2);
-//        if (choice == 1) {
-//            // System.out.println("Thank you for playing Buckshot Roulette - The gun has been holstered, for now..");
-//            return false;
-//        } else {
-//            // System.out.println("Reloading Gun and setting up table for a new round..");
-//            alivePlayerList.clear();
-//            return true;
-//        }
-//    }
-//}
-//

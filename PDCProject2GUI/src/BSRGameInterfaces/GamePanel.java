@@ -8,9 +8,6 @@ package BSRGameInterfaces;
 import BSRCodeLogic.ShootResult;
 import BSRCodeLogic.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.*;
@@ -40,6 +37,7 @@ public class GamePanel extends JPanel {
         LEFT_POS, RIGHT_POS, BOTTOM_POS, TOP_POS
     }
     private HashMap<Player, JButton> playerButtons = new HashMap<>();
+    private HashMap<Player, JButton> playerPowerUps = new HashMap<>();
     
     public boolean seeRounds;
     public boolean gameLoop;
@@ -52,7 +50,9 @@ public class GamePanel extends JPanel {
     public JLabel mainInfoLabel; // call infoLabel.setText ...
     public JPanel buttonLayout;
     public JButton shootButton; // shootButton
-    public JButton powerUpButton; // Powerup Button
+    
+    public boolean explodeImageOn = false;
+    public boolean smokeImageOn = false;
     
     
     public GamePanel(BuckshotRouletteGUI mainGUI, GameLogic game) {
@@ -116,10 +116,11 @@ public class GamePanel extends JPanel {
 
         for (Player player : alivePlayers) {
             PlayerPosition playerPos = playerPositions.get(player);
-            JButton playerButton = new JButton(player.getUsername());
+            JButton playerButton = new JButton();
 
             int x = 0;
             int y = 0;
+            
             
             switch (playerPos) {
                 case LEFT_POS: {
@@ -128,17 +129,6 @@ public class GamePanel extends JPanel {
                         y = tableY - playerSize / 2;
                         
                         playerButton.setBackground(Color.RED);
-                        playerButton.setBounds(x, y, playerSize, playerSize);
-                        
-                        playerButton.addActionListener(e -> {
-                            if (targettingPlayer) { // If player is going to be selected ! Targetting mode
-                                mainInfoLabel.setText("Select a player to shoot !");
-                                shootPlayer(player);
-                            }
-                        });
-                        
-                        this.add(playerButton);
-                        playerButtons.put(player, playerButton);
                         
                         break;
                     }
@@ -149,17 +139,6 @@ public class GamePanel extends JPanel {
                         y = tableY - playerSize / 2;
                         
                         playerButton.setBackground(Color.BLUE);
-                        playerButton.setBounds(x, y, playerSize, playerSize);
-                        
-                        playerButton.addActionListener(e -> {
-                            if (targettingPlayer) { // If player is going to be selected ! Targetting mode
-                                mainInfoLabel.setText("Select a player to shoot !");
-                                shootPlayer(player);
-                            }
-                        });
-                        
-                        this.add(playerButton);
-                        playerButtons.put(player, playerButton);
                         
                         break;
                     }
@@ -170,17 +149,6 @@ public class GamePanel extends JPanel {
                         y = tableY + tableDist - playerSize / 2;
                         
                         playerButton.setBackground(Color.GRAY);
-                        playerButton.setBounds(x, y, playerSize, playerSize);
-                        
-                        playerButton.addActionListener(e -> {
-                            if (targettingPlayer) { // If player is going to be selected ! Targetting mode
-                                mainInfoLabel.setText("Select a player to shoot !");
-                                shootPlayer(player);
-                            }
-                        });
-                        
-                        this.add(playerButton);
-                        playerButtons.put(player, playerButton);
                         
                         break;
                     }
@@ -191,22 +159,24 @@ public class GamePanel extends JPanel {
                         y = tableY - tableDist - playerSize / 2;
                         
                         playerButton.setBackground(Color.GREEN);
-                        playerButton.setBounds(x, y, playerSize, playerSize);
-                        
-                        playerButton.addActionListener(e -> {
-                            if (targettingPlayer) { // If player is going to be selected ! Targetting mode
-                                mainInfoLabel.setText("Select a player to shoot !");
-                                shootPlayer(player);
-                            }
-                        });
-                        
-                        this.add(playerButton);
-                        playerButtons.put(player, playerButton);
                         
                         break;
                     }
-                
             }
+            
+            playerButton.setBounds(x, y, playerSize, playerSize);
+
+            playerButton.addActionListener(e -> {
+                if (targettingPlayer) { // If player is going to be selected ! Targetting mode
+                    mainInfoLabel.setText("Select a player to shoot !");
+                    shootPlayer(player);
+                }
+            });
+
+            hideButtonFeatures(playerButton);
+            this.add(playerButton);
+            playerButtons.put(player, playerButton);
+            
         }
     }
     
@@ -231,8 +201,7 @@ public class GamePanel extends JPanel {
                         x = tableX - tableDist - playerSize / 2;
                         y = tableY - playerSize / 2;
                         
-                        g.drawString(username, x + 10, y - 20);
-                        displayHearts(player, x, y, g);
+                        g.setColor(Color.RED);
                         
                         break;
                     }
@@ -242,8 +211,7 @@ public class GamePanel extends JPanel {
                         x = tableX + tableDist - playerSize / 2;
                         y = tableY - playerSize / 2;
                         
-                        g.drawString(username, x + 10, y - 20);
-                        displayHearts(player, x, y, g);
+                        g.setColor(Color.BLUE);
                         
                         break;
                     }
@@ -253,8 +221,7 @@ public class GamePanel extends JPanel {
                         x = tableX - playerSize / 2;
                         y = tableY + tableDist - playerSize / 2;
                         
-                        g.drawString(username, x + 10, y + playerSize + 20);
-                        displayHearts(player, x, y, g);
+                        g.setColor(Color.GRAY);
                         
                         break;
                     }
@@ -264,21 +231,20 @@ public class GamePanel extends JPanel {
                         x = tableX - playerSize / 2;
                         y = tableY - tableDist - playerSize / 2;
                         
-                        g.drawString(username, x + 10, y - 20);
-                        displayHearts(player, x, y, g);
+                        g.setColor(Color.GREEN);
                         
                         break;
-                    }
-                
+                    }  
             }
+                                    
+            g.drawString(username, x, y - 10);
+            displayHearts(player, playerSize, x, y, g);
         }
     }
     
     public void setupInfoLabel() {
         mainInfoLabel = new JLabel();
-        
-        mainInfoLabel.setBounds(0,0, getWidth(), 30);
-        
+        mainInfoLabel.setBounds(0,0, getWidth(), 50);
         mainInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
         mainInfoLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainInfoLabel.setBackground(Color.GRAY);
@@ -296,10 +262,7 @@ public class GamePanel extends JPanel {
         
         shootButton.setLocation(x, y);
         
-        shootButton.setOpaque(false); 
-        shootButton.setContentAreaFilled(false);
-        shootButton.setBorderPainted(false);
-        shootButton.setFocusPainted(false);
+        hideButtonFeatures(shootButton);
         
         ImageIcon gunIcon = new ImageIcon("./resources/pixelGun.png");
         shootButton.setIcon(gunIcon);
@@ -308,33 +271,29 @@ public class GamePanel extends JPanel {
             mainInfoLabel.setText("Select a player to shoot!");
             targettingPlayer = true;
         });
+        
+        this.add(shootButton);
     }
     
-    public void setupPowerUpButton() {
-        powerUpButton = new JButton("PowerUps");
-        powerUpButton.setHorizontalAlignment(SwingConstants.CENTER);
-        powerUpButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        powerUpButton.setBackground(Color.GRAY);
-        powerUpButton.addActionListener(e -> {
-            // Check for if there is powerups !
-            if (!currentPlayer.getPowerUps().isEmpty()) {
-                mainInfoLabel.setText("Select a powerup to use:");
-            } else {
-                mainInfoLabel.setText("You have no powerups left!");
-            }
-        });
+    public void hideButtonFeatures(JButton button) { // If all images, revoce if statement later !
+        if (button.equals(shootButton)) {
+            button.setOpaque(false); 
+            button.setContentAreaFilled(false);
+        }
+        button.setBorderPainted(false);
+        button.setFocusPainted(false);
     }
     
-    public void displayHearts(Player player, int x, int y, Graphics g) {
+    public void displayHearts(Player player, int playerSize, int x, int y, Graphics g) {
         int playerHealth = player.checkHealth();
-        int heartSize = 10;
-        int heartSpacing = 7;
+        int heartSpacing = 25;
         
         g.setColor(Color.RED);
+        ImageIcon heartIcon = new ImageIcon("./resources/heart.png");
+        Image scaledHeart = heartIcon.getImage();
+        
         for (int i = 0; i < playerHealth; i++) {
-            g.fillOval(x + i * (heartSize + heartSpacing), y - heartSize - 2, heartSize, heartSize);
-            //Image heartImage = new Image("./resources/pixelHeart.png");
-            //g.drawImage(heartImage, x + i * (heartSize + heartSpacing), y - heartSize - 2, this);
+            g.drawImage(scaledHeart, (x - 18) + i * heartSpacing, y + playerSize + 5, this);
         }
     }
     
@@ -347,7 +306,7 @@ public class GamePanel extends JPanel {
         int roundSpacing = 7;
         int roundWidth = organisedRounds.size() * (roundSize + roundSpacing);
         int roundX = (getWidth() - roundWidth) / 2;
-        int roundY = getHeight() / 2 - roundSize / 2;
+        int roundY = getHeight() / 2 - roundSize - 50;
         
         // display casing !
         g.setColor(Color.GRAY);
@@ -378,23 +337,30 @@ public class GamePanel extends JPanel {
         
     }
     
-//        public void showSmoke(Graphics g) {
-//        Image smokeImage = new ImageIcon("./resources/smoke.png").getImage();
-//        int x = (getWidth() - shootButton.getWidth()) / 2;
-//        int y = (getHeight() - shootButton.getHeight()) / 2;
-//        g.drawImage(smokeImage, x, y, this);
-//        
-//        Timer smokeTimer = 
-//    }
-//        
-//    public void showExplosion(Graphics g) {
-//        Image explodeImage = new ImageIcon("./resources/smoke.png").getImage();
-//        int x = (getWidth() - shootButton.getWidth()) / 2;
-//        int y = (getHeight() - shootButton.getHeight()) / 2;
-//        g.drawImage(explodeImage, x, y, this);
-//        
-//        Timer smokeTimer = 
-//    }
+    public void showSmoke() {
+        smokeImageOn = true;
+        repaint();
+        
+        Timer smokeTimer = new Timer(1000, e -> {
+            smokeImageOn = false;
+            repaint();
+        });
+        smokeTimer.setRepeats(false);
+        smokeTimer.start();
+    }
+
+    
+    public void showExplosion() {
+        explodeImageOn = true;
+        repaint();
+        
+        Timer explodeTimer = new Timer(1000, e -> {
+            explodeImageOn = false;
+            repaint();
+        });
+        explodeTimer.setRepeats(false);
+        explodeTimer.start();
+    }
 
     @Override
     public void paintComponent(Graphics g) {
@@ -403,17 +369,29 @@ public class GamePanel extends JPanel {
         if (prep) { // Only paitn/ Setup these once per playthrough ! :D
             setupInfoLabel();
             setupShootButton();
-            setupPowerUpButton();
             setupPlayers();
+            setupPowerUps();
             prep = false;
         }
         
         setupTable(g); // Setup table !
-        // gun turn ?
         displayPlayerInfo(g); // Setup players !
         
         if (seeRounds) {
             displayRounds(g); // Display the rounds - only when nessesary ! toggle ?
+        }
+        
+        if (smokeImageOn) {
+            Image smokeImage = new ImageIcon("./resources/smoke.png").getImage();
+            int x = (getWidth() - shootButton.getWidth()) / 2 + 50;
+            int y = (getHeight() - shootButton.getHeight()) / 2 - 50;
+            g.drawImage(smokeImage, x, y, this);
+        }
+        if (explodeImageOn) {
+            Image explodeImage = new ImageIcon("./resources/explosion.png").getImage();
+            int x = (getWidth() - shootButton.getWidth()) / 2 + 50;
+            int y = (getHeight() - shootButton.getHeight()) / 2 - 50;
+            g.drawImage(explodeImage, x, y, this);
         }
     }
     
@@ -439,19 +417,23 @@ public class GamePanel extends JPanel {
     
     public void showActionButtons() {
         if (shootButton != null) {
-            this.add(shootButton);
+            shootButton.setEnabled(true);
         }
-        if (powerUpButton != null) {
-            this.add(powerUpButton);
+        if (playerPowerUps != null) {
+            for (JButton playerPUPButton : playerPowerUps.values()) {
+                playerPUPButton.setEnabled(true);
+            }
         }
     }
     
     public void removeActionButtons() {
         if (shootButton != null) {
-            this.remove(shootButton);
+            shootButton.setEnabled(false);
         }
-        if (powerUpButton != null) {
-            this.remove(powerUpButton);
+        if (playerPowerUps != null) {
+            for (JButton playerPUPButton : playerPowerUps.values()) {
+                playerPUPButton.setEnabled(false);
+            }
         }
     }
     
@@ -461,14 +443,17 @@ public boolean shootPlayer(Player targetPlayer) { // pass from click to the logi
         
         if ("bullet".equals(resultShot.shot)) {
             mainInfoLabel.setText("BANG! The Gun has fired a bullet at " + targetPlayer.getUsername());
+            showExplosion();
             turnComplete = true;
             
         } else if ("blank-other".equals(resultShot.shot)) {
             mainInfoLabel.setText("CHK-- The Gun fired a blank round at " + targetPlayer.getUsername());
+            showSmoke();
             turnComplete = true;
             
         } else if ("blank-self".equals(resultShot.shot)) {
             mainInfoLabel.setText("CHK-- The Gun fired a blank round at.. yourself?! You may continue your turn:");
+            showSmoke();
             turnComplete = false;
         }
         
@@ -478,37 +463,153 @@ public boolean shootPlayer(Player targetPlayer) { // pass from click to the logi
         repaint();
         
         if (resultShot.playerDied) {
-            Timer playerDied = new Timer(2000, e -> {
-                    mainInfoLabel.setText(targetPlayer.getUsername() + " has died!");
-                    playerButtons.remove(targetPlayer);
-                    alivePlayers = game.getAlivePlayers();
-                    repaint();
-            });
-            playerDied.setRepeats(false);
-            playerDied.start();
+            mainInfoLabel.setText(targetPlayer.getUsername() + " has died!");
+
+            if (playerButtons.get(targetPlayer) != null) {
+                this.remove(playerButtons.get(targetPlayer));
+            }
+            playerButtons.remove(targetPlayer);
+
+            if (playerPowerUps.get(targetPlayer) != null) {
+                this.remove(playerPowerUps.get(targetPlayer));
+            }
+            playerPowerUps.remove(targetPlayer);
+
+            System.out.println(game.getAlivePlayers());
+
+            alivePlayers = game.getAlivePlayers();
+
+            repaint();
         }
         
         if (resultShot.roundReloaded) {
-            Timer reloadedShot = new Timer(5000, e -> {
+            
+            Timer reloadedShot = new Timer(2000, e -> {
                     mainInfoLabel.setText("The Gun has been reloaded and PowerUps for each player have been restocked");
                     seeRounds = true;
                     repaint();
+                    
+                    Timer delayNextTurn = new Timer(2000, ev -> {
+                        playTurn();
+                    });
+                    
+                    delayNextTurn.setRepeats(false);
+                    delayNextTurn.start();
+                    
             });
+            
             reloadedShot.setRepeats(false);
             reloadedShot.start();
+            
+        } else {
+            Timer shootAction = new Timer(2000, e -> {
+                playTurn();
+            });
+            
+            shootAction.setRepeats(false);
+            shootAction.start();
         }
-        
-        Timer shootAction = new Timer(3000, e -> {
-            playTurn();
-        });
-        shootAction.setRepeats(false);
-        shootAction.start();
         
         return turnComplete;
     }
     
-    public void powerUpAction() {
+    public void setupPowerUps() {
+        playerPowerUps.clear(); // clear buttons cleaner !
+        alivePlayers = game.getAlivePlayers();
+        
+        int playerSize = 20;
+        int tableX = getWidth() / 2; // of window
+        int tableY = getHeight() / 2;// of window
+        int tableDist = TABLE_DIAM - playerSize; // Palyer dist from table
+        int spacing = 50;
+
+        for (Player player : alivePlayers) {
+            PlayerPosition playerPos = playerPositions.get(player);
+            JButton playerPUPButton = new JButton();
+
+            int x = 0;
+            int y = 0;
+            
+            
+            switch (playerPos) {
+                case LEFT_POS: {
+                        // Player 1 - Left
+                        x = tableX - tableDist - playerSize / 2 - spacing;
+                        y = tableY - playerSize / 2;
+                        
+                        playerPUPButton.setBackground(Color.RED);
+                        
+                        break;
+                    }
+                    
+                case RIGHT_POS: {
+                        // Player 2 - Right
+                        x = tableX + tableDist - playerSize / 2 + spacing;
+                        y = tableY - playerSize / 2;
+                        
+                        playerPUPButton.setBackground(Color.BLUE);
+                        
+                        break;
+                    }
+                    
+                case BOTTOM_POS: {
+                        // Player 3 - Bottom
+                        x = tableX - playerSize / 2 - spacing;
+                        y = tableY + tableDist - playerSize / 2;
+                        
+                        playerPUPButton.setBackground(Color.GRAY);
+                        
+                        break;
+                    }
+                    
+                case TOP_POS: {
+                        // Player 4 - Top
+                        x = tableX - playerSize / 2 + spacing;
+                        y = tableY - tableDist - playerSize / 2;
+                        
+                        playerPUPButton.setBackground(Color.GREEN);
+                        
+                        break;
+                    }
+            }
+            
+            playerPUPButton.setBounds(x, y, playerSize, playerSize);
+
+            playerPUPButton.addActionListener(e -> {
+                targettingPlayer = false;
+                //System.out.println("CLICK!");
+                if (player == currentPlayer) {
+                    if (player.getPowerUps().isEmpty()) {
+                        mainInfoLabel.setText("You have no more powerups! - Choose someone to shoot!");
+                    } else {
+                        mainInfoLabel.setText("Here are your PowerUps!");
+                        displayPowerUps();
+                    }
+                } else {
+                    mainInfoLabel.setText("You may only access your own powerups ! - Click the Gun to shoot or your Bag for powerups");
+                }
+            });
+
+            hideButtonFeatures(playerPUPButton);
+            this.add(playerPUPButton);
+            playerPowerUps.put(player, playerPUPButton);
+        }
+    }
     
+    public void displayPowerUps() {
+        JPopupMenu powerUpMenu = new JPopupMenu();
+        
+        for (String powerUp : currentPlayer.getPowerUps()) {
+            JMenuItem chosenPower = new JMenuItem(powerUp);
+            chosenPower.addActionListener(e -> {
+                String powerUpResult = game.powerUpAction(currentPlayer, powerUp, powerUps, round);
+                mainInfoLabel.setText(powerUpResult);
+            });
+            powerUpMenu.add(chosenPower);
+        }
+        
+        powerUpMenu.show(this, 0, this.getHeight());
+        
     }
     
     public void nextPlayerTurn() {

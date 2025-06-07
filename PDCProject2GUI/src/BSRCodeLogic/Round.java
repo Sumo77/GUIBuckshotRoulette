@@ -16,7 +16,7 @@ public final class Round { // Controls all of the Bullet / Blanks mechanics, eve
     
     // Initalise Constants and Variables
     public static final int NORMAL_BULLET_DMG = 1;
-    public static final int MAXROUNDS = 5;
+    public static final int MAXROUNDS = 6;
     public ArrayList currRoundList;
     final char liveRound = 'x';
     final char blankRound = 'o';
