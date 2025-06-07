@@ -39,11 +39,12 @@ public class GamePanel extends JPanel {
     public enum PlayerPosition {
         LEFT_POS, RIGHT_POS, BOTTOM_POS, TOP_POS
     }
-    private final HashMap<Player, Ellipse2D> playerHitBoxes = new HashMap<>();
+    private HashMap<Player, JButton> playerButtons = new HashMap<>();
     
     public boolean seeRounds;
     public boolean gameLoop;
     public boolean turnComplete = false;
+    public boolean prep = true;
     
     
     // Labels / Text Field / Buttons - GUIS!
@@ -93,36 +94,19 @@ public class GamePanel extends JPanel {
         
         gameLoop = true; // Reset gameloop to true !
         
-        this.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                if (targettingPlayer) { // If player is going to be selected ! Targetting mode
-                    mainInfoLabel.setText("Select a player to shoot !");
-                    shootTargetClick(e.getPoint());
-                }
-            }
-        });
-        
-        /*-------------------------------START PREP GAME------------------------------------*/
-        
         seeRounds = true;
-        
-        setupInfoLabel();
-        mainInfoLabel.setText("The Gun has been re-loaded with these unordered rounds: (Red = Bullet), (Blue = Blank)");
-        setupShootButton();
-        setupPowerUpButton();
-        
-        repaint();
+        this.setLayout(null); // Absolute pos for all !
     }
     
     /*----------------------------------SETUP / PAINT------------------------------------*/
     
     public void setupTable(Graphics g) { // Setup Table
-        // Create Table
         g.setColor(Color.ORANGE);
         g.fillOval((getWidth() - TABLE_DIAM) / 2, (getHeight() - TABLE_DIAM) / 2, TABLE_DIAM, TABLE_DIAM);
     }
     
-    public void setupPlayers(Graphics g) {
+    public void setupPlayers() {
+        playerButtons.clear(); // clear buttons cleaner !
         alivePlayers = game.getAlivePlayers();
         
         int playerSize = 60;
@@ -132,7 +116,7 @@ public class GamePanel extends JPanel {
 
         for (Player player : alivePlayers) {
             PlayerPosition playerPos = playerPositions.get(player);
-            String username = player.getUsername();
+            JButton playerButton = new JButton(player.getUsername());
 
             int x = 0;
             int y = 0;
@@ -143,14 +127,19 @@ public class GamePanel extends JPanel {
                         x = tableX - tableDist - playerSize / 2;
                         y = tableY - playerSize / 2;
                         
-                        g.setColor(Color.RED);
-                        g.fillOval(x, y, playerSize, playerSize); // DRAW player
+                        playerButton.setBackground(Color.RED);
+                        playerButton.setBounds(x, y, playerSize, playerSize);
                         
-                        Ellipse2D playerHB = new Ellipse2D.Double(x, y, playerSize, playerSize); // Create eclipse shape ontop of drawing so clickable !
-                        playerHitBoxes.put(player, playerHB); // PLace player and clickable in hashmap so easily findable
+                        playerButton.addActionListener(e -> {
+                            if (targettingPlayer) { // If player is going to be selected ! Targetting mode
+                                mainInfoLabel.setText("Select a player to shoot !");
+                                shootPlayer(player);
+                            }
+                        });
                         
-                        g.drawString(username, x + 10, y - 20); // draw username
-                        displayHearts(player, x, y, g); // Draw hearts
+                        this.add(playerButton);
+                        playerButtons.put(player, playerButton);
+                        
                         break;
                     }
                     
@@ -159,14 +148,19 @@ public class GamePanel extends JPanel {
                         x = tableX + tableDist - playerSize / 2;
                         y = tableY - playerSize / 2;
                         
-                        g.setColor(Color.BLUE);
-                        g.fillOval(x, y, playerSize, playerSize);
+                        playerButton.setBackground(Color.BLUE);
+                        playerButton.setBounds(x, y, playerSize, playerSize);
                         
-                        Ellipse2D playerHB = new Ellipse2D.Double(x, y, playerSize, playerSize); // Create eclipse shape ontop of drawing so clickable !
-                        playerHitBoxes.put(player, playerHB); // PLace player and clickable in hashmap so easily findable
+                        playerButton.addActionListener(e -> {
+                            if (targettingPlayer) { // If player is going to be selected ! Targetting mode
+                                mainInfoLabel.setText("Select a player to shoot !");
+                                shootPlayer(player);
+                            }
+                        });
                         
-                        g.drawString(username, x + 10, y - 20);
-                        displayHearts(player, x, y, g);
+                        this.add(playerButton);
+                        playerButtons.put(player, playerButton);
+                        
                         break;
                     }
                     
@@ -175,14 +169,19 @@ public class GamePanel extends JPanel {
                         x = tableX - playerSize / 2;
                         y = tableY + tableDist - playerSize / 2;
                         
-                        g.setColor(Color.GRAY);
-                        g.fillOval(x, y, playerSize, playerSize);
+                        playerButton.setBackground(Color.GRAY);
+                        playerButton.setBounds(x, y, playerSize, playerSize);
                         
-                        Ellipse2D playerHB = new Ellipse2D.Double(x, y, playerSize, playerSize); // Create eclipse shape ontop of drawing so clickable !
-                        playerHitBoxes.put(player, playerHB); // PLace player and clickable in hashmap so easily findable
-
-                        g.drawString(username, x + 10, y + playerSize + 20);
-                        displayHearts(player, x, y, g);
+                        playerButton.addActionListener(e -> {
+                            if (targettingPlayer) { // If player is going to be selected ! Targetting mode
+                                mainInfoLabel.setText("Select a player to shoot !");
+                                shootPlayer(player);
+                            }
+                        });
+                        
+                        this.add(playerButton);
+                        playerButtons.put(player, playerButton);
+                        
                         break;
                     }
                     
@@ -191,35 +190,120 @@ public class GamePanel extends JPanel {
                         x = tableX - playerSize / 2;
                         y = tableY - tableDist - playerSize / 2;
                         
-                        g.setColor(Color.GREEN);
-                        g.fillOval(x, y, playerSize, playerSize);
+                        playerButton.setBackground(Color.GREEN);
+                        playerButton.setBounds(x, y, playerSize, playerSize);
                         
-                        Ellipse2D playerHB = new Ellipse2D.Double(x, y, playerSize, playerSize); // Create eclipse shape ontop of drawing so clickable !
-                        playerHitBoxes.put(player, playerHB); // PLace player and clickable in hashmap so easily findable
+                        playerButton.addActionListener(e -> {
+                            if (targettingPlayer) { // If player is going to be selected ! Targetting mode
+                                mainInfoLabel.setText("Select a player to shoot !");
+                                shootPlayer(player);
+                            }
+                        });
+                        
+                        this.add(playerButton);
+                        playerButtons.put(player, playerButton);
+                        
+                        break;
+                    }
+                
+            }
+        }
+    }
+    
+        public void displayPlayerInfo(Graphics g) {
+        alivePlayers = game.getAlivePlayers();
+        
+        int playerSize = 60;
+        int tableX = getWidth() / 2; // of window
+        int tableY = getHeight() / 2;// of window
+        int tableDist = TABLE_DIAM - playerSize; // Palyer dist from table
+
+        for (Player player : alivePlayers) {
+            PlayerPosition playerPos = playerPositions.get(player);
+            String username = player.getUsername();
+            
+            int x = 0;
+            int y = 0;
+            
+            switch (playerPos) {
+                case LEFT_POS: {
+                        // Player 1 - Left
+                        x = tableX - tableDist - playerSize / 2;
+                        y = tableY - playerSize / 2;
                         
                         g.drawString(username, x + 10, y - 20);
                         displayHearts(player, x, y, g);
+                        
                         break;
                     }
+                    
+                case RIGHT_POS: {
+                        // Player 2 - Right
+                        x = tableX + tableDist - playerSize / 2;
+                        y = tableY - playerSize / 2;
+                        
+                        g.drawString(username, x + 10, y - 20);
+                        displayHearts(player, x, y, g);
+                        
+                        break;
+                    }
+                    
+                case BOTTOM_POS: {
+                        // Player 3 - Bottom
+                        x = tableX - playerSize / 2;
+                        y = tableY + tableDist - playerSize / 2;
+                        
+                        g.drawString(username, x + 10, y + playerSize + 20);
+                        displayHearts(player, x, y, g);
+                        
+                        break;
+                    }
+                    
+                case TOP_POS: {
+                        // Player 4 - Top
+                        x = tableX - playerSize / 2;
+                        y = tableY - tableDist - playerSize / 2;
+                        
+                        g.drawString(username, x + 10, y - 20);
+                        displayHearts(player, x, y, g);
+                        
+                        break;
+                    }
+                
             }
         }
     }
     
     public void setupInfoLabel() {
         mainInfoLabel = new JLabel();
+        
+        mainInfoLabel.setBounds(0,0, getWidth(), 30);
+        
         mainInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
         mainInfoLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainInfoLabel.setBackground(Color.GRAY);
         this.add(mainInfoLabel);
+        mainInfoLabel.setText("The Gun has been re-loaded with these unordered rounds: (Red = Bullet), (Blue = Blank)");
     }
     
     public void setupShootButton() {
-        shootButton = new JButton("Shoot!");
+        shootButton = new JButton();
         
-        shootButton.setHorizontalAlignment(SwingConstants.CENTER);
-        shootButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        shootButton.setSize(100, 40);
         
-        shootButton.setBackground(Color.GRAY);
+        int x = (getWidth() - shootButton.getWidth()) / 2;
+        int y = (getHeight() - shootButton.getHeight()) / 2;
+        
+        shootButton.setLocation(x, y);
+        
+        shootButton.setOpaque(false); 
+        shootButton.setContentAreaFilled(false);
+        shootButton.setBorderPainted(false);
+        shootButton.setFocusPainted(false);
+        
+        ImageIcon gunIcon = new ImageIcon("./resources/pixelGun.png");
+        shootButton.setIcon(gunIcon);
+        
         shootButton.addActionListener(e -> {
             mainInfoLabel.setText("Select a player to shoot!");
             targettingPlayer = true;
@@ -241,14 +325,6 @@ public class GamePanel extends JPanel {
         });
     }
     
-//    public void buttonLayout() {
-//        buttonLayout = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10)); // Horizontal spacing
-//        buttonLayout.add(shootButton);
-//        buttonLayout.add(powerUpButton);
-//        this.add(buttonLayout, BorderLayout.SOUTH);
-//        buttonLayout.setVisible(false);
-//    }
-    
     public void displayHearts(Player player, int x, int y, Graphics g) {
         int playerHealth = player.checkHealth();
         int heartSize = 10;
@@ -257,6 +333,8 @@ public class GamePanel extends JPanel {
         g.setColor(Color.RED);
         for (int i = 0; i < playerHealth; i++) {
             g.fillOval(x + i * (heartSize + heartSpacing), y - heartSize - 2, heartSize, heartSize);
+            //Image heartImage = new Image("./resources/pixelHeart.png");
+            //g.drawImage(heartImage, x + i * (heartSize + heartSpacing), y - heartSize - 2, this);
         }
     }
     
@@ -299,15 +377,40 @@ public class GamePanel extends JPanel {
         displayTimer.start();
         
     }
-
     
+//        public void showSmoke(Graphics g) {
+//        Image smokeImage = new ImageIcon("./resources/smoke.png").getImage();
+//        int x = (getWidth() - shootButton.getWidth()) / 2;
+//        int y = (getHeight() - shootButton.getHeight()) / 2;
+//        g.drawImage(smokeImage, x, y, this);
+//        
+//        Timer smokeTimer = 
+//    }
+//        
+//    public void showExplosion(Graphics g) {
+//        Image explodeImage = new ImageIcon("./resources/smoke.png").getImage();
+//        int x = (getWidth() - shootButton.getWidth()) / 2;
+//        int y = (getHeight() - shootButton.getHeight()) / 2;
+//        g.drawImage(explodeImage, x, y, this);
+//        
+//        Timer smokeTimer = 
+//    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g); // Clear
-
+        
+        if (prep) { // Only paitn/ Setup these once per playthrough ! :D
+            setupInfoLabel();
+            setupShootButton();
+            setupPowerUpButton();
+            setupPlayers();
+            prep = false;
+        }
         
         setupTable(g); // Setup table !
-        setupPlayers(g); // Setup players !
+        // gun turn ?
+        displayPlayerInfo(g); // Setup players !
         
         if (seeRounds) {
             displayRounds(g); // Display the rounds - only when nessesary ! toggle ?
@@ -351,20 +454,7 @@ public class GamePanel extends JPanel {
             this.remove(powerUpButton);
         }
     }
-
     
-    
-    public void shootTargetClick(Point playerClick) { // handle player targetting shot / click
-        for (HashMap.Entry<Player, Ellipse2D> playerHitBox : playerHitBoxes.entrySet()) {
-            
-            Ellipse2D currPlayerHitBox = playerHitBox.getValue();
-            
-            if (currPlayerHitBox.contains(playerClick)) {
-                targettingPlayer = false;
-                shootPlayer(playerHitBox.getKey());
-            }
-        }
-    }
     
 public boolean shootPlayer(Player targetPlayer) { // pass from click to the logic/gui of the shot
         ShootResult resultShot = game.shootAction(currentPlayer, targetPlayer, round);
@@ -380,14 +470,17 @@ public boolean shootPlayer(Player targetPlayer) { // pass from click to the logi
         } else if ("blank-self".equals(resultShot.shot)) {
             mainInfoLabel.setText("CHK-- The Gun fired a blank round at.. yourself?! You may continue your turn:");
             turnComplete = false;
-        }   
+        }
+        
+        targettingPlayer = false;
+        removeActionButtons();
         
         repaint();
         
         if (resultShot.playerDied) {
             Timer playerDied = new Timer(2000, e -> {
                     mainInfoLabel.setText(targetPlayer.getUsername() + " has died!");
-                    playerHitBoxes.remove(targetPlayer);
+                    playerButtons.remove(targetPlayer);
                     alivePlayers = game.getAlivePlayers();
                     repaint();
             });
@@ -396,7 +489,7 @@ public boolean shootPlayer(Player targetPlayer) { // pass from click to the logi
         }
         
         if (resultShot.roundReloaded) {
-            Timer reloadedShot = new Timer(2000, e -> {
+            Timer reloadedShot = new Timer(5000, e -> {
                     mainInfoLabel.setText("The Gun has been reloaded and PowerUps for each player have been restocked");
                     seeRounds = true;
                     repaint();
