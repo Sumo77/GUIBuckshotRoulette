@@ -266,7 +266,7 @@ public class GamePanel extends JPanel {
     
     public void setupWinnerLabel() {
         winnerLabel = new JLabel();
-        winnerLabel.setBounds(0, getHeight() / 2, getWidth() - 100, 50);
+        winnerLabel.setBounds(0, getHeight() / 2 + 200, getWidth(), 50);
         winnerLabel.setHorizontalAlignment(SwingConstants.CENTER);
         winnerLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         winnerLabel.setFont(new Font("Arial", Font.BOLD, 15));

@@ -26,6 +26,7 @@ public class StartMenuPanel extends JPanel {
     private JButton twoPlayersButton;
     private JButton threePlayersButton;
     private JButton fourPlayersButton;
+    private JLabel hintLabel;
     
     
     public StartMenuPanel(BuckshotRouletteGUI mainGUI, GameLogic game) {
@@ -35,12 +36,21 @@ public class StartMenuPanel extends JPanel {
         
         
         startButton = new JButton("Start");
-        startButton.setBounds(375, 300, 100, 40);
+        startButton.setBounds(320, 300, 200, 80);
+        ImageIcon signBackground = new ImageIcon("./resources/signTemplate.png");
+        startButton.setIcon(signBackground);
+        startButton.setFont(new Font("Arial", Font.BOLD, 20));
+        startButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        startButton.setVerticalTextPosition(SwingConstants.CENTER);
         startButton.addActionListener((ActionEvent e) -> showPlayerNumber());
         
         
         exitButton = new JButton("Exit");
-        exitButton.setBounds(375, 400, 100, 40);
+        exitButton.setBounds(320, 400, 200, 80);
+        exitButton.setIcon(signBackground);
+        exitButton.setFont(new Font("Arial", Font.BOLD, 20));
+        exitButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        exitButton.setVerticalTextPosition(SwingConstants.CENTER);
         exitButton.addActionListener((ActionEvent e) -> {
             System.exit(0); // Exit the application
         });
@@ -61,6 +71,11 @@ public class StartMenuPanel extends JPanel {
         promptLabel.setHorizontalAlignment(SwingConstants.CENTER);
         promptLabel.setBounds(220, 200, 400, 40);
         add(promptLabel);
+        
+        hintLabel = new JLabel();
+        hintLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+        hintLabel.setBounds(220, 600, 400, 40);
+        randomHintArray();
 
         // Add player count buttons
         twoPlayersButton = new JButton("2 Players");
@@ -68,9 +83,25 @@ public class StartMenuPanel extends JPanel {
         fourPlayersButton = new JButton("4 Players");
 
         // Set button bounds
-        twoPlayersButton.setBounds(235, 300, 120, 40);
-        threePlayersButton.setBounds(365, 300, 120, 40);
-        fourPlayersButton.setBounds(495, 300, 120, 40);
+        twoPlayersButton.setBounds(105, 300, 200, 80);
+        threePlayersButton.setBounds(320, 300, 200, 80);
+        fourPlayersButton.setBounds(535, 300, 200, 80);
+        
+        ImageIcon signBackground = new ImageIcon("./resources/signTemplate.png");
+        twoPlayersButton.setIcon(signBackground);
+        twoPlayersButton.setFont(new Font("Arial", Font.BOLD, 20));
+        twoPlayersButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        twoPlayersButton.setVerticalTextPosition(SwingConstants.CENTER);
+        
+        threePlayersButton.setIcon(signBackground);
+        threePlayersButton.setFont(new Font("Arial", Font.BOLD, 20));
+        threePlayersButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        threePlayersButton.setVerticalTextPosition(SwingConstants.CENTER);
+        
+        fourPlayersButton.setIcon(signBackground);
+        fourPlayersButton.setFont(new Font("Arial", Font.BOLD, 20));
+        fourPlayersButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        fourPlayersButton.setVerticalTextPosition(SwingConstants.CENTER);
 
         // Add action listeners
         twoPlayersButton.addActionListener(e -> {
@@ -91,6 +122,7 @@ public class StartMenuPanel extends JPanel {
         add(twoPlayersButton);
         add(threePlayersButton);
         add(fourPlayersButton);
+        add(hintLabel);
 
         revalidate();
         repaint();
@@ -163,43 +195,66 @@ public class StartMenuPanel extends JPanel {
         game.assignPlayerPowerUps(player, powerUps);
     }
     
-//    public void randomHintArray() {
-//        Random random = new Random();
-//        int randomHint = random.nextInt(5);
-//        
-//        switch(randomHint) {
-//            case 0:
-//                hintLabel.setText("Hint: Click the Banana to shoot !");
-//                break;
-//            case 1:
-//                hintLabel.setText("Hint: Click the Basket to select a powerups !");
-//                break;
-//            case 2:
-//                hintLabel.setText("Hint: Cigarettes heal you by 1 health!");
-//                break;
-//            case 3:
-//                hintLabel.setText("Hint: Reverse Order reverses the order in which you play!");
-//                break;
-//            case 4:
-//                hintLabel.setText("Hint: Blind Reload Gun reloads and reorganises the banana gun");
-//                break;
-//            case 5:
-//                hintLabel.setText("Hint: Double Damage upgrades your shot to 2 damage! You lose it if you shoot a blank though..");
-//                break;
-//        }
-//        
-//    }
+    public void randomHintArray() {
+        Random random = new Random();
+        int randomHint = random.nextInt(5);
+        
+        switch(randomHint) {
+            case 0:
+                hintLabel.setText("Hint: Click the Banana to shoot !");
+                break;
+            case 1:
+                hintLabel.setText("Hint: Click the Basket to select a powerups !");
+                break;
+            case 2:
+                hintLabel.setText("Hint: Cigarettes heal you by 1 health!");
+                break;
+            case 3:
+                hintLabel.setText("Hint: Reverse Order reverses the order in which you play!");
+                break;
+            case 4:
+                hintLabel.setText("Hint: Blind Reload Gun reloads and reorganises the banana gun");
+                break;
+            case 5:
+                hintLabel.setText("Hint: Double Damage upgrades your shot to 2 damage! You lose it if you shoot a blank though..");
+                break;
+        }
+        
+    }
     
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        // Display background
+        Image background = new ImageIcon("./resources/picnicBG.png").getImage();
+        g.drawImage(background, 0, 0, this);
         // Display title
         g.setFont(new Font("Arial", Font.BOLD, 50));
-        g.drawString("Buckshot Roulette", 200, 100);
+        g.setColor(Color.WHITE);
+        g.drawString("Buckshot Roulette", 200, 135);
         // Display header
         g.setFont(new Font("Arial", Font.BOLD, 24));
+        g.setColor(Color.BLACK);
         g.drawString("Welcome to Buckshot Roulette!", 250, 200);
         // Display creators
         g.setFont(new Font("Arial", Font.PLAIN, 15));
         g.drawString("Created by Summer Harris and Davor Georgiev", 250, 700);
+        // Display decorative Gun
+        Image gun = new ImageIcon("./resources/banana.png").getImage();
+        g.drawImage(gun, 100, 130, this);
+        // Display decorative Orange
+        Image orange = new ImageIcon("./resources/OrangePlayerLEFT.png").getImage();
+        g.drawImage(orange, 500, 130, this);
+        // Display decorative Orange
+        Image apple = new ImageIcon("./resources/ApplePlayerTOP.png").getImage();
+        g.drawImage(apple, 600, 480, this);
+        // Display decorative Apple
+        Image pear = new ImageIcon("./resources/PearPlayerRIGHT.png").getImage();
+        g.drawImage(pear, 200, 390, this);
+        // Display decorative Pear
+        Image grape = new ImageIcon("./resources/GrapePlayerBOTTOM.png").getImage();
+        g.drawImage(grape, 100, 530, this);
+        // Display decorative 
+        Image pumpkinTable = new ImageIcon("./resources/pumpkinTable.png").getImage();
+        g.drawImage(pumpkinTable, 630, -50, this);
     }
 }
