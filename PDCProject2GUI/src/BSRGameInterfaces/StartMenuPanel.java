@@ -30,10 +30,8 @@ public class StartMenuPanel extends JPanel {
     private BuckshotRouletteGUI mainGUI; // Import main gui
     private GameLogic game; // Import game logic
     //define all interactable buttons / textfields / drawings (start button or textfield for usernames)
-    private JButton startButton;
-    private JButton exitButton;
-    private JTextField playerCountField;
-    private JTextField[] playerNameFields;
+    private final JButton startButton;
+    private final JButton exitButton;
     private JButton twoPlayersButton;
     private JButton threePlayersButton;
     private JButton fourPlayersButton;
@@ -128,15 +126,37 @@ public class StartMenuPanel extends JPanel {
     }
 
     private String getUniqueUsername(int playerNum) {
-        String userName;
-        do {
-            userName = JOptionPane.showInputDialog(this, 
-                "Enter a unique username for Player " + (playerNum + 1) + ":", 
-                "Player Username", 
-                JOptionPane.QUESTION_MESSAGE);
-        } while (userName == null || userName.trim().isEmpty() || usernameExists(userName));
-        return userName.trim();
+    String userName;
+
+    while (true) {
+        userName = JOptionPane.showInputDialog(this, 
+            "Enter a unique username for Player " + (playerNum + 1) + ":", 
+            "Player Username", 
+            JOptionPane.QUESTION_MESSAGE);
+
+        // Handle cancel or close dialog
+        if (userName == null) {
+            JOptionPane.showMessageDialog(this, 
+                "Player setup canceled. Exiting the game.", 
+                "Setup Canceled", 
+                JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0); // Exit the application
+        }
+
+        userName = userName.trim();
+
+        if (!userName.isEmpty() && !usernameExists(userName)) {
+            return userName; // Return the valid username
+        }
+
+        // Notify the user if the username is invalid
+        JOptionPane.showMessageDialog(this, 
+            "Invalid or duplicate username. Please try again.", 
+            "Invalid Username", 
+            JOptionPane.ERROR_MESSAGE);
     }
+}
+
 
     private boolean usernameExists(String userName) {
         for (Player player : alivePlayerList) {

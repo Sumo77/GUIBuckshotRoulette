@@ -49,7 +49,7 @@ public class GameLogic { // Main Game Logic - Pulls all together
             System.out.println("-------------------------------------");
             //round.displayRounds(); // Display Gun Round
 
-            playGame(round, powerUps); // Start Game
+            // playGame(round, powerUps); // Start Game
 
             // gameLoop = commenceGameEnd(scan); // Will end the main game loop on commence of method
         }
@@ -172,29 +172,29 @@ public class GameLogic { // Main Game Logic - Pulls all together
         
     }
 
-    private static void playGame(Round round, PowerUpManager powerUps) { // Control player turn loop and determine a winner
-        while (!isWinner()) {
-            int currPlayer = 0;
-            
-            while (alivePlayerList.size() > 1 && currPlayer < alivePlayerList.size()) { // Loop for each players turn
-                
-                Player currentPlayer = alivePlayerList.get(currPlayer);
-                
-//                System.out.println("-------------------------------------");
-//                printHealth();
-//                System.out.println("-------------------------------------");
-//
-//                System.out.println(currentPlayer.getUsername() + "'s Turn!");
-//                System.out.println("-------------------------------------");
+//    private static void playGame(Round round, PowerUpManager powerUps) { // Control player turn loop and determine a winner
+//        while (!isWinner()) {
+//            int currPlayer = 0;
+//            
+//            while (alivePlayerList.size() > 1 && currPlayer < alivePlayerList.size()) { // Loop for each players turn
 //                
-//                playerTurn(currentPlayer, round, powerUps); // Start player turn
-
-                currPlayer = alivePlayerList.indexOf(currentPlayer) + 1; // Update player order before continuing to next player (incase reversed or changed)
-            }
-        }
-        
-        announceWinner();
-    }
+//                Player currentPlayer = alivePlayerList.get(currPlayer);
+//                
+////                System.out.println("-------------------------------------");
+////                printHealth();
+////                System.out.println("-------------------------------------");
+////
+////                System.out.println(currentPlayer.getUsername() + "'s Turn!");
+////                System.out.println("-------------------------------------");
+////                
+////                playerTurn(currentPlayer, round, powerUps); // Start player turn
+//
+//                currPlayer = alivePlayerList.indexOf(currentPlayer) + 1; // Update player order before continuing to next player (incase reversed or changed)
+//            }
+//        }
+//        
+//        announceWinner();
+//    }
     
 //    public static void printHealth() { // Print health of alive players
 //        for (Player player : alivePlayerList) {
@@ -357,15 +357,15 @@ public class GameLogic { // Main Game Logic - Pulls all together
         }
     }
     
-    private static void announceWinner() { // Print out the winner of the match
+    public Player announceWinner() { // Print out the winner of the match
         Player winner = alivePlayerList.get(0);
-//        System.out.println("+-----------------------------------+");
-//        System.out.println(winner.getUsername() + " is the (sole) winner!");
-//        winner.updateWins(1);
-//        System.out.println("+-----------------------------------+");
-//        System.out.println("Winner's Leaderboard:");
-          winManager.displayWinsTable();
-//        System.out.println("+-----------------------------------+");
+        winner.updateWins(1);
+        return winner;
+    }
+    
+    public ArrayList displayWinners() {
+        return winManager.displayWinsTable();
+        
     }
 }
 

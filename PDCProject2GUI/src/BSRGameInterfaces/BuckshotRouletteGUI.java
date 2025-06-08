@@ -37,7 +37,7 @@ public class BuckshotRouletteGUI extends JFrame {
         
         frame.setVisible(true);
         
-        panelLayout.show(allPanels, "Start Menu"); //change which panel showing at beginning
+        panelLayout.show(allPanels, "End Game"); //change which panel showing at beginning
     }
     
     public void showPanel(String panelName) {
