@@ -8,6 +8,7 @@ package BSRGameInterfaces;
 import BSRCodeLogic.ShootResult;
 import BSRCodeLogic.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.*;
@@ -36,8 +37,8 @@ public class GamePanel extends JPanel {
     public enum PlayerPosition {
         LEFT_POS, RIGHT_POS, BOTTOM_POS, TOP_POS
     }
-    private HashMap<Player, JButton> playerButtons = new HashMap<>();
-    private HashMap<Player, JButton> playerPowerUps = new HashMap<>();
+    private final HashMap<Player, JButton> playerButtons = new HashMap<>();
+    private final HashMap<Player, JButton> playerPowerUps = new HashMap<>();
     
     public boolean seeRounds;
     public boolean gameLoop;
@@ -50,6 +51,8 @@ public class GamePanel extends JPanel {
     public JLabel mainInfoLabel; // call infoLabel.setText ...
     public JPanel buttonLayout;
     public JButton shootButton; // shootButton
+    public JLabel winnerLabel;
+    public JButton exitButton;
     
     public boolean explodeImageOn = false;
     public boolean smokeImageOn = false;
@@ -81,8 +84,6 @@ public class GamePanel extends JPanel {
         round = new Round();
         round.generateRounds(); // Perhaps in own method ?
         powerUps = new PowerUpManager();
-        
-        
         
         alivePlayers = game.getAlivePlayers(); // Able to get all players and usernames from this !
         numPlayers = alivePlayers.size();
@@ -178,7 +179,7 @@ public class GamePanel extends JPanel {
 
             playerButton.addActionListener(e -> {
                 if (targettingPlayer) { // If player is going to be selected ! Targetting mode
-                    mainInfoLabel.setText("Select a player to shoot !");
+                    mainInfoLabel.setText(currentPlayer.getUsername() + ", click a player to shoot !");
                     shootPlayer(player);
                 }
             });
@@ -211,8 +212,6 @@ public class GamePanel extends JPanel {
                         x = tableX - tableDist - playerSize / 2;
                         y = tableY - playerSize / 2;
                         
-                        g.setColor(Color.ORANGE);
-                        
                         break;
                     }
                     
@@ -220,8 +219,6 @@ public class GamePanel extends JPanel {
                         // Player 2 - Right
                         x = tableX + tableDist - playerSize / 2;
                         y = tableY - playerSize / 2;
-                        
-                        g.setColor(Color.GREEN);
                         
                         break;
                     }
@@ -231,8 +228,6 @@ public class GamePanel extends JPanel {
                         x = tableX - playerSize / 2;
                         y = tableY + tableDist - playerSize / 2;
                         
-                        g.setColor(Color.MAGENTA);
-                        
                         break;
                     }
                     
@@ -241,12 +236,16 @@ public class GamePanel extends JPanel {
                         x = tableX - playerSize / 2;
                         y = tableY - tableDist - playerSize / 2;
                         
-                        g.setColor(Color.RED);
-                        
                         break;
                     }  
             }
-                                    
+            
+            if (player == currentPlayer) {
+                g.setColor(Color.RED);
+            } else {
+                g.setColor(Color.BLACK);
+            }
+            
             g.setFont(new Font("Arial", Font.BOLD, 20));
             g.drawString(username, x, y - 10);
             displayHearts(player, playerSize, x, y, g);
@@ -255,14 +254,26 @@ public class GamePanel extends JPanel {
     
     public void setupInfoLabel() {
         mainInfoLabel = new JLabel();
-        mainInfoLabel.setBounds(0,0, getWidth(), 50);
+        mainInfoLabel.setBounds(0, 10, getWidth(), 50);
         mainInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
         mainInfoLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainInfoLabel.setFont(new Font("Arial", Font.BOLD, 15));
         mainInfoLabel.setBackground(Color.WHITE);
         mainInfoLabel.setOpaque(true);
-        this.add(mainInfoLabel);
         mainInfoLabel.setText("The Banana Gun has been re-loaded with these unordered rounds: (Red = Bullet), (Blue = Blank)");
+        this.add(mainInfoLabel);
+    }
+    
+    public void setupWinnerLabel() {
+        winnerLabel = new JLabel();
+        winnerLabel.setBounds(0, getHeight() / 2, getWidth() - 100, 50);
+        winnerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        winnerLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        winnerLabel.setFont(new Font("Arial", Font.BOLD, 15));
+        winnerLabel.setBackground(Color.WHITE);
+        winnerLabel.setOpaque(true);
+        this.add(winnerLabel);
+        winnerLabel.setVisible(false);
     }
     
     public void setupShootButton() {
@@ -281,7 +292,7 @@ public class GamePanel extends JPanel {
         shootButton.setIcon(gunIcon);
         
         shootButton.addActionListener(e -> {
-            mainInfoLabel.setText("Click a player to shoot!");
+            mainInfoLabel.setText("Click a player to shoot " + currentPlayer.getUsername() + "!");
             targettingPlayer = true;
         });
         
@@ -299,7 +310,6 @@ public class GamePanel extends JPanel {
         int playerHealth = player.checkHealth();
         int heartSpacing = 25;
         
-        g.setColor(Color.RED);
         ImageIcon heartIcon = new ImageIcon("./resources/heart.png");
         Image scaledHeart = heartIcon.getImage();
         
@@ -385,6 +395,8 @@ public class GamePanel extends JPanel {
             setupShootButton();
             setupPlayers();
             setupPowerUps();
+            exitGameButton();
+            setupWinnerLabel();
             prep = false;
         }
         
@@ -417,7 +429,7 @@ public class GamePanel extends JPanel {
         }
         
         if (!turnComplete) {
-            mainInfoLabel.setText("It's " + currentPlayer.getUsername() + "'s turn! Click the Banana Gun to Shoot or Click your Bag to use a Powerup:");
+            mainInfoLabel.setText("It's " + currentPlayer.getUsername() + "'s turn! Click the Banana Gun to Shoot or Click your Basket to use a Powerup:");
             showActionButtons();
             
         } else {
@@ -456,17 +468,17 @@ public boolean shootPlayer(Player targetPlayer) { // pass from click to the logi
         ShootResult resultShot = game.shootAction(currentPlayer, targetPlayer, round);
         
         if ("bullet".equals(resultShot.shot)) {
-            mainInfoLabel.setText("BANG! The Gun has fired a bullet at " + targetPlayer.getUsername());
+            mainInfoLabel.setText("BANG! The Banana Gun has fired a bullet at " + targetPlayer.getUsername());
             showExplosion();
             turnComplete = true;
             
         } else if ("blank-other".equals(resultShot.shot)) {
-            mainInfoLabel.setText("CHK-- The Gun fired a blank round at " + targetPlayer.getUsername());
+            mainInfoLabel.setText("CHK-- The Banana Gun fired a blank round at " + targetPlayer.getUsername());
             showSmoke();
             turnComplete = true;
             
         } else if ("blank-self".equals(resultShot.shot)) {
-            mainInfoLabel.setText("CHK-- The Gun fired a blank round at.. yourself?! You may continue your turn:");
+            mainInfoLabel.setText("CHK-- The Banana Gun fired a blank round at.. yourself?! You may continue your turn:");
             showSmoke();
             turnComplete = false;
         }
@@ -494,12 +506,15 @@ public boolean shootPlayer(Player targetPlayer) { // pass from click to the logi
             alivePlayers = game.getAlivePlayers();
 
             repaint();
+            
+            // winner check !
+            isWinner();
         }
         
         if (resultShot.roundReloaded) {
             
             Timer reloadedShot = new Timer(2000, e -> {
-                    mainInfoLabel.setText("The Gun has been reloaded and PowerUps for each player have been restocked");
+                    mainInfoLabel.setText("The Banana Gun has been reloaded and PowerUps for each Player have been restocked!");
                     seeRounds = true;
                     repaint();
                     
@@ -534,7 +549,7 @@ public boolean shootPlayer(Player targetPlayer) { // pass from click to the logi
         int playerSize = 20;
         int tableX = getWidth() / 2; // of window
         int tableY = getHeight() / 2;// of window
-        int tableDist = TABLE_DIAM - playerSize; // Palyer dist from table
+        int tableDist = TABLE_DIAM - playerSize; // Player dist from table
         int spacing = 50;
 
         for (Player player : alivePlayers) {
@@ -594,10 +609,10 @@ public boolean shootPlayer(Player targetPlayer) { // pass from click to the logi
                 //System.out.println("CLICK!");
                 if (player == currentPlayer) {
                     if (player.getPowerUps().isEmpty()) {
-                        mainInfoLabel.setText("You have no more powerups! - Choose someone to shoot!");
+                        mainInfoLabel.setText("You have no more powerups, " + currentPlayer.getUsername() + "! - Click the Banana Gun to shoot!");
                     } else {
-                        mainInfoLabel.setText("Here are your PowerUps!");
-                        displayPowerUps();
+                        mainInfoLabel.setText("Here are your PowerUps, " + currentPlayer.getUsername() + "!");
+                        displayPowerUps(playerPUPButton.getX(), playerPUPButton.getY());
                     }
                 } else {
                     mainInfoLabel.setText("You may only access your own powerups ! - Click the Gun to shoot or your Bag for powerups");
@@ -615,7 +630,7 @@ public boolean shootPlayer(Player targetPlayer) { // pass from click to the logi
         }
     }
     
-    public void displayPowerUps() {
+    public void displayPowerUps(int x, int y) {
         JPopupMenu powerUpMenu = new JPopupMenu();
         
         for (String powerUp : currentPlayer.getPowerUps()) {
@@ -623,26 +638,26 @@ public boolean shootPlayer(Player targetPlayer) { // pass from click to the logi
             chosenPower.addActionListener(e -> {
                 String powerUpResult = game.powerUpAction(currentPlayer, powerUp, powerUps, round);
                 mainInfoLabel.setText(powerUpResult);
+                repaint();
+                
+                Timer powerUpTimer = new Timer(3000, e2 -> {
+                    mainInfoLabel.setText("It's still " + currentPlayer.getUsername() + "'s turn! Click the Banana Gun to Shoot or Click your Basket to use a Powerup:");
+                    repaint();
+                });
+                powerUpTimer.setRepeats(false);
+                powerUpTimer.start();
             });
             powerUpMenu.add(chosenPower);
         }
         
-        powerUpMenu.show(this, 0, this.getHeight());
+        powerUpMenu.show(this, x, y);
         
     }
     
     public void nextPlayerTurn() {
         alivePlayers = game.getAlivePlayers(); // Check dead
         numPlayers = alivePlayers.size(); // Quickly refresh player amount
-        
-        boolean checkWinner = game.isWinner();
-        if (checkWinner) {
-            gameLoop = false;
-            Player winner = game.announceWinner();
-            // Announce winner - timer
-            mainGUI.endGame();
-        }
-        
+
         currentPlayerNum = (currentPlayerNum + 1) % numPlayers; // Change to next player !
         currentPlayer = alivePlayers.get(currentPlayerNum);
         
@@ -650,8 +665,37 @@ public boolean shootPlayer(Player targetPlayer) { // pass from click to the logi
         playTurn();
     }
     
+    public void isWinner() {
+        boolean checkWinner = game.isWinner();
+        if (checkWinner) {
+            gameLoop = false;
+            Player winner = game.announceWinner();
+            winnerLabel.setText("The Winner is: " + winner.getUsername() + "!");
+            winnerLabel.setVisible(true);
+            repaint();
+            
+            Timer winnerTimer = new Timer(3000, e -> {
+                mainGUI.endGame();
+            });
+            winnerTimer.setRepeats(false);
+            winnerTimer.start();
+        }
+    }
+    
     public void exitGameButton() { // Exit button !
+        exitButton = new JButton("EXIT");
+        exitButton.setBounds(getWidth() - 100, getHeight() - 40, 100, 40);
+        ImageIcon exit = new ImageIcon("./resources/signTemplate.png");
+        exitButton.setIcon(exit);
         
+        exitButton.setFont(new Font("Arial", Font.BOLD, 15));
+        exitButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        exitButton.setVerticalTextPosition(SwingConstants.CENTER);
+        
+        exitButton.addActionListener((ActionEvent e) -> {
+            System.exit(0); // Exit the application
+        });
+        this.add(exitButton);
     }
     
 }

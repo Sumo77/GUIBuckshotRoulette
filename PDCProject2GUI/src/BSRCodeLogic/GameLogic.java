@@ -92,7 +92,7 @@ public class GameLogic { // Main Game Logic - Pulls all together
         
     }
 
-    public static boolean isWinner() { // Return condition for a player to classify as a winner
+    public boolean isWinner() { // Return condition for a player to classify as a winner
         if (alivePlayerList.size() == 1) {
             return true; // One left, winner !
         } else {

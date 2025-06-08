@@ -9,10 +9,7 @@ import BSRGameDatabase.WinTableManager;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JTextArea;
+import javax.swing.*;
 
 /**
  * @author Davor Georgiev
@@ -20,18 +17,13 @@ import javax.swing.JTextArea;
  */
 
 public class EndGamePanel extends JPanel {
-    private BuckshotRouletteGUI mainGUI; // Import main gui
-    private GameLogic game; // Import game logic
     //define all interactable buttons / textfields / drawings (start button or textfield for usernames)
     private JButton playAgainButton;
     private JButton exitButton;
-    private WinTableManager winTableManager;
-    private JLabel titleLabel;
     private JTextArea scoreArea;
     
     public EndGamePanel(BuckshotRouletteGUI mainGUI, GameLogic game) {
         //gui logic
-        this.mainGUI = mainGUI;
         ArrayList scoreboard = game.displayWinners();
         setLayout(null);
         

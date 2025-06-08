@@ -4,21 +4,12 @@
  */
 package BSRGameInterfaces;
 
-import BSRCodeLogic.GameLogic;
-import static BSRCodeLogic.GameLogic.alivePlayerList;
-import static BSRCodeLogic.GameLogic.winManager;
-import BSRCodeLogic.Player;
+import BSRCodeLogic.*;
+import static BSRCodeLogic.GameLogic.*;
 import java.awt.*;
-import javax.swing.JButton;
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import BSRCodeLogic.PowerUpManager;
-import javax.swing.JOptionPane;
+import java.util.Random;
 
 
 /**
@@ -27,7 +18,7 @@ import javax.swing.JOptionPane;
  */
 
 public class StartMenuPanel extends JPanel {
-    private BuckshotRouletteGUI mainGUI; // Import main gui
+    private final BuckshotRouletteGUI mainGUI; // Import main gui
     private GameLogic game; // Import game logic
     //define all interactable buttons / textfields / drawings (start button or textfield for usernames)
     private final JButton startButton;
@@ -157,7 +148,6 @@ public class StartMenuPanel extends JPanel {
     }
 }
 
-
     private boolean usernameExists(String userName) {
         for (Player player : alivePlayerList) {
             if (player.getUsername().equalsIgnoreCase(userName)) {
@@ -172,6 +162,33 @@ public class StartMenuPanel extends JPanel {
         // Logic for assigning power-ups
         game.assignPlayerPowerUps(player, powerUps);
     }
+    
+//    public void randomHintArray() {
+//        Random random = new Random();
+//        int randomHint = random.nextInt(5);
+//        
+//        switch(randomHint) {
+//            case 0:
+//                hintLabel.setText("Hint: Click the Banana to shoot !");
+//                break;
+//            case 1:
+//                hintLabel.setText("Hint: Click the Basket to select a powerups !");
+//                break;
+//            case 2:
+//                hintLabel.setText("Hint: Cigarettes heal you by 1 health!");
+//                break;
+//            case 3:
+//                hintLabel.setText("Hint: Reverse Order reverses the order in which you play!");
+//                break;
+//            case 4:
+//                hintLabel.setText("Hint: Blind Reload Gun reloads and reorganises the banana gun");
+//                break;
+//            case 5:
+//                hintLabel.setText("Hint: Double Damage upgrades your shot to 2 damage! You lose it if you shoot a blank though..");
+//                break;
+//        }
+//        
+//    }
     
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
