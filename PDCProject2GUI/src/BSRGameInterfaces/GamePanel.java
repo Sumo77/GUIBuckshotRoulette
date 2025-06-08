@@ -84,7 +84,7 @@ public class GamePanel extends JPanel {
         
         
         
-        alivePlayers = game.makeAlivePlayers(); // Able to get all players and usernames from this !
+        alivePlayers = game.getAlivePlayers(); // Able to get all players and usernames from this !
         numPlayers = alivePlayers.size();
         
         assignPositionsToPlayers();  // Assign positions once here
@@ -638,7 +638,9 @@ public boolean shootPlayer(Player targetPlayer) { // pass from click to the logi
         boolean checkWinner = game.isWinner();
         if (checkWinner) {
             gameLoop = false;
-            return; // or go to end game screen !
+            Player winner = game.announceWinner();
+            // Announce winner - timer
+            mainGUI.endGame();
         }
         
         currentPlayerNum = (currentPlayerNum + 1) % numPlayers; // Change to next player !

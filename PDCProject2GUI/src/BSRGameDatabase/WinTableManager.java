@@ -10,10 +10,12 @@ package BSRGameDatabase;
  */
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class WinTableManager { // Manages the WinTable Reading / Writing to and from the Database
     
-    private final Connection conn; // Database !
+    private final Connection conn;
+    public ArrayList<String> topPlayers = new ArrayList<>();// Database !
     
     public WinTableManager(DatabaseManager dbManager) { // pass database manager to scoretable (from player or main) throw error if not able to create statements
         this.conn = dbManager.getConnection(); // Connect to the DatabaseManager
@@ -122,27 +124,28 @@ public class WinTableManager { // Manages the WinTable Reading / Writing to and 
         }
     }
     
-    public void displayWinsTable() { // Display the top 10 (or under) winners of the game in the winTable
+    public ArrayList<String> displayWinsTable() { 
+        System.out.print(topPlayers);
+        if (!topPlayers.isEmpty()) {
+            topPlayers.clear(); // Clear the list for fresh data
+        }
         try {
-            PreparedStatement prepStatement = conn.prepareStatement("SELECT USERNAME, WINS FROM WINS_TABLE ORDER BY WINS DESC FETCH FIRST 10 ROWS ONLY");
-            
-            ResultSet result = prepStatement.executeQuery(); // Get the Top 10 (or less) players (username + wins) organised by decending num of wins
-            
-            int numRank = 1; // Number them from 1 - 10 for leader stats !
-            
-            while(result.next()) { // Cycle through each row of the selected from the statement above ^
-                String username = result.getString("USERNAME"); // Save username to var
-                int wins = result.getInt("WINS"); // Save win to var
-                
-                System.out.println(numRank + ": " + username + " | " + wins); // Add to array - Return array
-                numRank++; // Increase rank for next person
+            PreparedStatement prepStatement = conn.prepareStatement(
+                "SELECT USERNAME, WINS FROM WINS_TABLE ORDER BY WINS DESC FETCH FIRST 10 ROWS ONLY");
+            ResultSet result = prepStatement.executeQuery();
+
+            while (result.next()) { 
+                String username = result.getString("USERNAME");
+                int wins = result.getInt("WINS");
+                topPlayers.add(username + " | " + wins); // Add to array
             }
 
-            prepStatement.close(); // End statement nicely
-            
+            result.close();
+            prepStatement.close();
         } catch (SQLException ex) {
-            System.out.println("Failed to add New Player to the Wins_Table: " + ex.getMessage());
+            System.out.println("Failed to retrieve wins from the Wins_Table: " + ex.getMessage());
         }
+
+        return topPlayers; // Return the ArrayList
     }
-    
 }
