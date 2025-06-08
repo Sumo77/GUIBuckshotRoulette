@@ -271,4 +271,5 @@ public class GameLogic { // Main Game Logic - Pulls all together
         winner.updateWins(1);
         winManager.displayWinsTable();
     }
+    
 }

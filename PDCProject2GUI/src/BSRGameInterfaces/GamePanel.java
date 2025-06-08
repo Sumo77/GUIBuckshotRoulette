@@ -82,6 +82,8 @@ public class GamePanel extends JPanel {
         round.generateRounds(); // Perhaps in own method ?
         powerUps = new PowerUpManager();
         
+        
+        
         alivePlayers = game.makeAlivePlayers(); // Able to get all players and usernames from this !
         numPlayers = alivePlayers.size();
         
@@ -101,8 +103,12 @@ public class GamePanel extends JPanel {
     /*----------------------------------SETUP / PAINT------------------------------------*/
     
     public void setupTable(Graphics g) { // Setup Table
-        g.setColor(Color.ORANGE);
-        g.fillOval((getWidth() - TABLE_DIAM) / 2, (getHeight() - TABLE_DIAM) / 2, TABLE_DIAM, TABLE_DIAM);
+        //g.setColor(Color.ORANGE);
+        //g.fillOval((getWidth() - TABLE_DIAM) / 2, (getHeight() - TABLE_DIAM) / 2, TABLE_DIAM, TABLE_DIAM);
+        int tableX = (getWidth() - TABLE_DIAM) / 2;
+        int tableY = (getHeight() - TABLE_DIAM) / 2;
+        Image table = new ImageIcon("./resources/pumpkinTable.png").getImage();
+        g.drawImage(table, tableX, tableY, this);
     }
     
     public void setupPlayers() {
@@ -128,7 +134,8 @@ public class GamePanel extends JPanel {
                         x = tableX - tableDist - playerSize / 2;
                         y = tableY - playerSize / 2;
                         
-                        playerButton.setBackground(Color.RED);
+                        ImageIcon orangePlayer = new ImageIcon("./resources/OrangePlayerLEFT.png");
+                        playerButton.setIcon(orangePlayer);
                         
                         break;
                     }
@@ -138,7 +145,8 @@ public class GamePanel extends JPanel {
                         x = tableX + tableDist - playerSize / 2;
                         y = tableY - playerSize / 2;
                         
-                        playerButton.setBackground(Color.BLUE);
+                        ImageIcon pearPlayer = new ImageIcon("./resources/PearPlayerRIGHT.png");
+                        playerButton.setIcon(pearPlayer);
                         
                         break;
                     }
@@ -148,7 +156,8 @@ public class GamePanel extends JPanel {
                         x = tableX - playerSize / 2;
                         y = tableY + tableDist - playerSize / 2;
                         
-                        playerButton.setBackground(Color.GRAY);
+                        ImageIcon grapePlayer = new ImageIcon("./resources/GrapePlayerBOTTOM.png");
+                        playerButton.setIcon(grapePlayer);
                         
                         break;
                     }
@@ -158,7 +167,8 @@ public class GamePanel extends JPanel {
                         x = tableX - playerSize / 2;
                         y = tableY - tableDist - playerSize / 2;
                         
-                        playerButton.setBackground(Color.GREEN);
+                        ImageIcon applePlayer = new ImageIcon("./resources/ApplePlayerTOP.png");
+                        playerButton.setIcon(applePlayer);
                         
                         break;
                     }
@@ -201,7 +211,7 @@ public class GamePanel extends JPanel {
                         x = tableX - tableDist - playerSize / 2;
                         y = tableY - playerSize / 2;
                         
-                        g.setColor(Color.RED);
+                        g.setColor(Color.ORANGE);
                         
                         break;
                     }
@@ -211,7 +221,7 @@ public class GamePanel extends JPanel {
                         x = tableX + tableDist - playerSize / 2;
                         y = tableY - playerSize / 2;
                         
-                        g.setColor(Color.BLUE);
+                        g.setColor(Color.GREEN);
                         
                         break;
                     }
@@ -221,7 +231,7 @@ public class GamePanel extends JPanel {
                         x = tableX - playerSize / 2;
                         y = tableY + tableDist - playerSize / 2;
                         
-                        g.setColor(Color.GRAY);
+                        g.setColor(Color.MAGENTA);
                         
                         break;
                     }
@@ -231,12 +241,13 @@ public class GamePanel extends JPanel {
                         x = tableX - playerSize / 2;
                         y = tableY - tableDist - playerSize / 2;
                         
-                        g.setColor(Color.GREEN);
+                        g.setColor(Color.RED);
                         
                         break;
                     }  
             }
                                     
+            g.setFont(new Font("Arial", Font.BOLD, 20));
             g.drawString(username, x, y - 10);
             displayHearts(player, playerSize, x, y, g);
         }
@@ -247,9 +258,11 @@ public class GamePanel extends JPanel {
         mainInfoLabel.setBounds(0,0, getWidth(), 50);
         mainInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
         mainInfoLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        mainInfoLabel.setBackground(Color.GRAY);
+        mainInfoLabel.setFont(new Font("Arial", Font.BOLD, 15));
+        mainInfoLabel.setBackground(Color.WHITE);
+        mainInfoLabel.setOpaque(true);
         this.add(mainInfoLabel);
-        mainInfoLabel.setText("The Gun has been re-loaded with these unordered rounds: (Red = Bullet), (Blue = Blank)");
+        mainInfoLabel.setText("The Banana Gun has been re-loaded with these unordered rounds: (Red = Bullet), (Blue = Blank)");
     }
     
     public void setupShootButton() {
@@ -264,11 +277,11 @@ public class GamePanel extends JPanel {
         
         hideButtonFeatures(shootButton);
         
-        ImageIcon gunIcon = new ImageIcon("./resources/pixelGun.png");
+        ImageIcon gunIcon = new ImageIcon("./resources/banana.png");
         shootButton.setIcon(gunIcon);
         
         shootButton.addActionListener(e -> {
-            mainInfoLabel.setText("Select a player to shoot!");
+            mainInfoLabel.setText("Click a player to shoot!");
             targettingPlayer = true;
         });
         
@@ -276,10 +289,8 @@ public class GamePanel extends JPanel {
     }
     
     public void hideButtonFeatures(JButton button) { // If all images, revoce if statement later !
-        if (button.equals(shootButton)) {
-            button.setOpaque(false); 
-            button.setContentAreaFilled(false);
-        }
+        button.setOpaque(false); 
+        button.setContentAreaFilled(false);
         button.setBorderPainted(false);
         button.setFocusPainted(false);
     }
@@ -366,6 +377,9 @@ public class GamePanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g); // Clear
         
+        Image background = new ImageIcon("./resources/picnicBG.png").getImage();
+        g.drawImage(background, 0, 0, this);
+        
         if (prep) { // Only paitn/ Setup these once per playthrough ! :D
             setupInfoLabel();
             setupShootButton();
@@ -403,7 +417,7 @@ public class GamePanel extends JPanel {
         }
         
         if (!turnComplete) {
-            mainInfoLabel.setText("It's " + currentPlayer.getUsername() + "'s turn! Choose to Shoot or use a Powerup:");
+            mainInfoLabel.setText("It's " + currentPlayer.getUsername() + "'s turn! Click the Banana Gun to Shoot or Click your Bag to use a Powerup:");
             showActionButtons();
             
         } else {
@@ -538,6 +552,7 @@ public boolean shootPlayer(Player targetPlayer) { // pass from click to the logi
                         y = tableY - playerSize / 2;
                         
                         playerPUPButton.setBackground(Color.RED);
+                        //System.out.println("player1PUPprinted");
                         
                         break;
                     }
@@ -548,32 +563,31 @@ public boolean shootPlayer(Player targetPlayer) { // pass from click to the logi
                         y = tableY - playerSize / 2;
                         
                         playerPUPButton.setBackground(Color.BLUE);
+                        //System.out.println("player2PUPprinted");
                         
                         break;
                     }
                     
                 case BOTTOM_POS: {
                         // Player 3 - Bottom
-                        x = tableX - playerSize / 2 - spacing;
-                        y = tableY + tableDist - playerSize / 2;
+                        x = tableX - playerSize / 2 - (spacing + spacing / 2);
+                        y = tableY + tableDist - playerSize / 2 - spacing;
                         
                         playerPUPButton.setBackground(Color.GRAY);
-                        
+                        //System.out.println("player3PUPprinted");
                         break;
                     }
                     
                 case TOP_POS: {
                         // Player 4 - Top
-                        x = tableX - playerSize / 2 + spacing;
-                        y = tableY - tableDist - playerSize / 2;
+                        x = tableX - playerSize / 2 + (spacing + spacing / 2);
+                        y = tableY - tableDist - playerSize / 2 + spacing;
                         
                         playerPUPButton.setBackground(Color.GREEN);
-                        
+                        //System.out.println("player4PUPprinted");
                         break;
                     }
             }
-            
-            playerPUPButton.setBounds(x, y, playerSize, playerSize);
 
             playerPUPButton.addActionListener(e -> {
                 targettingPlayer = false;
@@ -589,10 +603,15 @@ public boolean shootPlayer(Player targetPlayer) { // pass from click to the logi
                     mainInfoLabel.setText("You may only access your own powerups ! - Click the Gun to shoot or your Bag for powerups");
                 }
             });
-
+            
+            playerPUPButton.setBounds(x, y, 50, 60);
+            
             hideButtonFeatures(playerPUPButton);
+            ImageIcon pupIcon = new ImageIcon("./resources/basketPUP.png");
+            playerPUPButton.setIcon(pupIcon);
             this.add(playerPUPButton);
             playerPowerUps.put(player, playerPUPButton);
+            repaint();
         }
     }
     

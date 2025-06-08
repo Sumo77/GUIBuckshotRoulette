@@ -134,7 +134,7 @@ public class WinTableManager { // Manages the WinTable Reading / Writing to and 
                 String username = result.getString("USERNAME"); // Save username to var
                 int wins = result.getInt("WINS"); // Save win to var
                 
-                System.out.println(numRank + ": " + username + " | " + wins); // Print out info
+                System.out.println(numRank + ": " + username + " | " + wins); // Add to array - Return array
                 numRank++; // Increase rank for next person
             }
 
