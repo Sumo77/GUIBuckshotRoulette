@@ -134,10 +134,13 @@ public class WinTableManager { // Manages the WinTable Reading / Writing to and 
                 "SELECT USERNAME, WINS FROM WINS_TABLE ORDER BY WINS DESC FETCH FIRST 10 ROWS ONLY");
             ResultSet result = prepStatement.executeQuery();
 
+            int rank = 1;
+            
             while (result.next()) { 
                 String username = result.getString("USERNAME");
                 int wins = result.getInt("WINS");
-                topPlayers.add(username + " | " + wins); // Add to array
+                topPlayers.add(rank + ": " + username + " | Wins: " + wins); // Add to array
+                rank++;
             }
 
             result.close();

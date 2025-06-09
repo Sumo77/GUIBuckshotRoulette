@@ -51,7 +51,7 @@ public class EndGamePanel extends JPanel {
         
         // Scoreboard Area
         scoreArea = new JTextArea();
-        scoreArea.setBounds(100, 300, 400, 120); // Set position and size
+        scoreArea.setBounds(100, 300, 400, 300); // Set position and size
         scoreArea.setEditable(false); // Make it read-only
         scoreArea.setFont(new Font("Arial", Font.BOLD, 14)); 
         scoreArea.setOpaque(false);

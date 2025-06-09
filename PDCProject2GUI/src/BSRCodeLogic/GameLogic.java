@@ -1,14 +1,3 @@
-/*
-
-
-
-convert this game class to obly logic
-link it to apropriate gui
-
-
-
-*/
-
 package BSRCodeLogic;
 
 import java.util.Scanner;
@@ -32,36 +21,36 @@ public class GameLogic { // Main Game Logic - Pulls all together
     public static WinTableManager winManager = new WinTableManager(dbManager); // Connect to winsTable
 
 
-    private static int setupPlayers(Scanner scan, PowerUpManager powerUps) { // Sets up and displays all player information
-        numPlayers = getPlayerCount(scan); // Get and check number of players
-        return numPlayers; // return player number
-    }
+//    private static int setupPlayers(Scanner scan, PowerUpManager powerUps) { // Sets up and displays all player information
+//        numPlayers = getPlayerCount(scan); // Get and check number of players
+//        return numPlayers; // return player number
+//    }
 
-    private static int getPlayerCount(Scanner scan) { // Retrieve and check for valid number of players
-        numPlayers = 0;
-        boolean validPlayerAmount = false; 
-        
-        while (!validPlayerAmount) {
-            
-            if (scan.hasNextInt()) {
-                numPlayers = scan.nextInt();
-                scan.nextLine();
-                
-                if (numPlayers >= 2 && numPlayers <= MAX_PLAYER_AMOUNT) {
-                    validPlayerAmount = true;
-                } else {
-                    System.out.println("Invalid number. Please enter a player amount from 2 players minimum to " + MAX_PLAYER_AMOUNT + " players maximum:");
-                }
-                
-            } else {
-                System.out.println("Invalid input. Please enter a player amount from 2 players minimum to " + MAX_PLAYER_AMOUNT + " players maximum:");
-                scan.nextLine();
-            }
-        }
-        return numPlayers; // Return num players
-    }
+//    private static int getPlayerCount(Scanner scan) { // Retrieve and check for valid number of players
+//        numPlayers = 0;
+//        boolean validPlayerAmount = false; 
+//        
+//        while (!validPlayerAmount) {
+//            
+//            if (scan.hasNextInt()) {
+//                numPlayers = scan.nextInt();
+//                scan.nextLine();
+//                
+//                if (numPlayers >= 2 && numPlayers <= MAX_PLAYER_AMOUNT) {
+//                    validPlayerAmount = true;
+//                } else {
+//                    System.out.println("Invalid number. Please enter a player amount from 2 players minimum to " + MAX_PLAYER_AMOUNT + " players maximum:");
+//                }
+//                
+//            } else {
+//                System.out.println("Invalid input. Please enter a player amount from 2 players minimum to " + MAX_PLAYER_AMOUNT + " players maximum:");
+//                scan.nextLine();
+//            }
+//        }
+//        return numPlayers; // Return num players
+//    }
     
-    public static void createPlayer(String username, PowerUpManager powerUps) {
+    public void createPlayer(String username, PowerUpManager powerUps) {
         Player player = new Player(username, winManager);
         alivePlayerList.add(player);
         
@@ -82,7 +71,7 @@ public class GameLogic { // Main Game Logic - Pulls all together
         return true; // That username is not taken, all good.
     }
 
-    public static ArrayList<String> assignPlayerPowerUps(Player player, PowerUpManager powerUps) {  // Assign a set of powerups to each player 
+    public ArrayList<String> assignPlayerPowerUps(Player player, PowerUpManager powerUps) {  // Assign a set of powerups to each player 
         ArrayList<String> playerPowerUps = powerUps.recievePowerUps();
         
         for (String powerUp : playerPowerUps) {

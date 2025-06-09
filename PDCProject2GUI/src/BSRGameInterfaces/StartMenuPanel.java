@@ -26,12 +26,13 @@ public class StartMenuPanel extends JPanel {
     private JButton twoPlayersButton;
     private JButton threePlayersButton;
     private JButton fourPlayersButton;
-    private JLabel hintLabel;
+    private final JLabel hintLabel;
     
     
     public StartMenuPanel(BuckshotRouletteGUI mainGUI, GameLogic game) {
         //gui logic
         this.mainGUI = mainGUI;
+        this.game = game;
         setLayout(null);
         
         
@@ -55,10 +56,17 @@ public class StartMenuPanel extends JPanel {
             System.exit(0); // Exit the application
         });
         
+        hintLabel = new JLabel();
+        hintLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        hintLabel.setForeground(Color.WHITE);
+        hintLabel.setBounds(105, 600, 850, 40);
+        hintLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+        randomHintArray();
 
         // Add button to panel
         add(startButton);
         add(exitButton);
+        add(hintLabel);
     }
     
     private void showPlayerNumber() {
@@ -71,11 +79,6 @@ public class StartMenuPanel extends JPanel {
         promptLabel.setHorizontalAlignment(SwingConstants.CENTER);
         promptLabel.setBounds(220, 200, 400, 40);
         add(promptLabel);
-        
-        hintLabel = new JLabel();
-        hintLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-        hintLabel.setBounds(220, 600, 400, 40);
-        randomHintArray();
 
         // Add player count buttons
         twoPlayersButton = new JButton("2 Players");
@@ -122,7 +125,6 @@ public class StartMenuPanel extends JPanel {
         add(twoPlayersButton);
         add(threePlayersButton);
         add(fourPlayersButton);
-        add(hintLabel);
 
         revalidate();
         repaint();
@@ -195,33 +197,33 @@ public class StartMenuPanel extends JPanel {
         game.assignPlayerPowerUps(player, powerUps);
     }
     
-    public void randomHintArray() {
+    public final void randomHintArray() {
         Random random = new Random();
-        int randomHint = random.nextInt(5);
+        int randomHint = random.nextInt(6);
         
         switch(randomHint) {
             case 0:
-                hintLabel.setText("Hint: Click the Banana to shoot !");
+                hintLabel.setText("Hint: Click the Banana to aim, then click a player to shoot !");
                 break;
             case 1:
-                hintLabel.setText("Hint: Click the Basket to select a powerups !");
+                hintLabel.setText("Hint: Click the Basket near your player to select a powerup !");
                 break;
             case 2:
-                hintLabel.setText("Hint: Cigarettes heal you by 1 health!");
+                hintLabel.setText("Hint: The Powerup 'Cigarettes' heal you by 1 health!");
                 break;
             case 3:
-                hintLabel.setText("Hint: Reverse Order reverses the order in which you play!");
+                hintLabel.setText("Hint: The Powerup 'Reverse Order' reverses the order in which you play!");
                 break;
             case 4:
-                hintLabel.setText("Hint: Blind Reload Gun reloads and reorganises the banana gun");
+                hintLabel.setText("Hint: The Powerup 'Blind Reload Gun' reloads and reorganises the Banana Gun");
                 break;
             case 5:
-                hintLabel.setText("Hint: Double Damage upgrades your shot to 2 damage! You lose it if you shoot a blank though..");
+                hintLabel.setText("Hint: The Powerup 'Double Damage' upgrades your next shot to 2 damage! You lose it if you shoot a blank though..");
                 break;
         }
-        
     }
     
+    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         // Display background
