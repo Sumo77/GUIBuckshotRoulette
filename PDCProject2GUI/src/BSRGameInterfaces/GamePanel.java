@@ -32,9 +32,9 @@ public class GamePanel extends JPanel {
     public enum PlayerPosition { // All positions around table
         LEFT_POS, RIGHT_POS, BOTTOM_POS, TOP_POS
     }
-    private final HashMap<Player, JButton> playerButtons = new HashMap<>(); // Player's GUI - Holds Player reference and their GUI button
+    public final HashMap<Player, JButton> playerButtons = new HashMap<>(); // Player's GUI - Holds Player reference and their GUI button
     
-    private final HashMap<Player, JButton> playerPowerUps = new HashMap<>(); // Player's GUI PowerUps - Holds Player reference and their GUI powerUp button
+    public final HashMap<Player, JButton> playerPowerUps = new HashMap<>(); // Player's GUI PowerUps - Holds Player reference and their GUI powerUp button
     
     public boolean seeRounds; // Display the rounds ! (True = paint, False = no paint)
     public boolean gameLoop; // Keep the game running !

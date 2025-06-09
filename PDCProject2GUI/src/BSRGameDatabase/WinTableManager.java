@@ -29,7 +29,7 @@ public class WinTableManager { // Manages the WinTable Reading / Writing to and 
             ResultSet result = prepStatement.executeQuery(); // Try to select the WinsTable from the systems tables
             
             if (result.next()) { // If can select the table,
-                System.out.println("Table exists"); // Table exists !
+                //System.out.println("Table exists"); // Table exists !
             } else { // Nothing selected, table does not exist, so create !
                 prepStatement = conn.prepareStatement("CREATE TABLE WINS_TABLE (Username VARCHAR(255) PRIMARY KEY, Wins INT)");
                 prepStatement.executeUpdate(); // Create winsTable that stores username and number of wins
