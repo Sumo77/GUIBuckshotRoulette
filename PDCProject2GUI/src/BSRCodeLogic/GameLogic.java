@@ -10,8 +10,8 @@ public class GameLogic { // Main Game Logic - Pulls all together
     public static final int MAX_PLAYER_AMOUNT = 4;
     public static final int MAX_ACTION_NUM = 3;
     
-    public static ArrayList<Player> alivePlayerList = new ArrayList<>(); // player list - only contains alive / active 
-    public static int numPlayers;
+    public ArrayList<Player> alivePlayerList = new ArrayList<>(); // player list - only contains alive / active 
+    public int numPlayers;
     public int currPlayerNum;
     
     public boolean winner;
@@ -61,7 +61,7 @@ public class GameLogic { // Main Game Logic - Pulls all together
         assignPlayerPowerUps(player, powerUps);
     }
     
-    public static boolean isUniqueUsername(String username) { // Return condition for a player to not have the same username as another player
+    public boolean isUniqueUsername(String username) { // Return condition for a player to not have the same username as another player
         for (Player player : alivePlayerList) {
             if (player.getUsername().equalsIgnoreCase(username)) {
                 return false; // Can't have that username, it has been taken (even if it is in lower caps)
