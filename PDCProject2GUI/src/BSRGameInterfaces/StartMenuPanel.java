@@ -111,15 +111,15 @@ public class StartMenuPanel extends JPanel {
         // Add action listeners to move to the main game panel when buttons pressed
         twoPlayersButton.addActionListener(e -> {
             initializePlayers(2);
-            mainGUI.startGame();
+            mainGUI.playGame();
         });
         threePlayersButton.addActionListener(e -> {
             initializePlayers(3);
-            mainGUI.startGame();
+            mainGUI.playGame();
         });
         fourPlayersButton.addActionListener(e -> {
             initializePlayers(4);
-            mainGUI.startGame();
+            mainGUI.playGame();
         });
 
 

@@ -47,6 +47,7 @@ public class GamePanel extends JPanel {
     public JLabel mainInfoLabel; // The main instruction/description of events label at top of game
     public JButton shootButton; // Click this button to target a player to shoot
     public JLabel winnerLabel; // Announce winner at end of game !
+    public JButton resetButton; // Reset game / go back to start menu
     public JButton exitButton; // Exit the game at any stage
     
     public boolean explodeImageOn = false; // Temporary explosion by gun
@@ -244,12 +245,13 @@ public class GamePanel extends JPanel {
     public void displayHearts(Player player, int playerSize, int x, int y, Graphics g) { // Display player health (hearts)
         int playerHealth = player.checkHealth(); // Check the health of the player !
         int heartSpacing = 25; // Spacing between each heart
+        int heartStartX = 18;
         
         ImageIcon heartIcon = new ImageIcon("./resources/heart.png"); // Heart IMG
         Image scaledHeart = heartIcon.getImage();
         
         for (int i = 0; i < playerHealth; i++) { // For each health, draw heart ! (spaced)
-            g.drawImage(scaledHeart, (x - 18) + i * heartSpacing, y + playerSize + 5, this);
+            g.drawImage(scaledHeart, (x - heartStartX) + i * heartSpacing, y + playerSize + 5, this);
         }
     }
     
@@ -454,7 +456,7 @@ public class GamePanel extends JPanel {
     public void setupWinnerLabel() { // Setup Winner Label do announce Winner at the end
         winnerLabel = new JLabel(); // Create
         
-        winnerLabel.setBounds(0, getHeight() / 2 + 200, getWidth(), 50); // Set pos
+        winnerLabel.setBounds(0, getHeight() - 100, getWidth(), 50); // Set pos
         winnerLabel.setHorizontalAlignment(SwingConstants.CENTER);
         winnerLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Set boundary
         
@@ -573,6 +575,7 @@ public class GamePanel extends JPanel {
             setupShootButton(); // Shoot Button / Banana Gun
             setupPlayers(); // Players characters (buttons)
             setupPowerUps(); // Players baskets (buttons)
+            resetGameButton(); // Reset game
             exitGameButton(); // Exit button
             setupWinnerLabel(); // Winner label
             prep = false;
@@ -670,6 +673,26 @@ public class GamePanel extends JPanel {
             winnerTimer.setRepeats(false);
             winnerTimer.start();
         }
+    }
+    
+    public void resetGameButton() { // Exit (at any time in the game) button !
+        resetButton = new JButton("RESET"); // Create
+        
+        resetButton.setBounds(0, getHeight() - 40, 100, 40); // Size and pos
+        
+        ImageIcon exit = new ImageIcon("./resources/signTemplate.png"); // sign IMG
+        resetButton.setIcon(exit); // Set background to sign
+        
+        resetButton.setFont(new Font("Arial", Font.BOLD, 15)); // Set font
+        
+        resetButton.setHorizontalTextPosition(SwingConstants.CENTER); // Set font over sign image
+        resetButton.setVerticalTextPosition(SwingConstants.CENTER);
+        
+        resetButton.addActionListener((ActionEvent e) -> { // Event listener, if button pressed, exit !
+            mainGUI.startMenu();
+        });
+        
+        this.add(resetButton); // Add button to panel
     }
     
     public void exitGameButton() { // Exit (at any time in the game) button !

@@ -27,19 +27,24 @@ public class BuckshotRouletteGUI extends JFrame {
         panelLayout = new CardLayout();
         allPanels = new JPanel(panelLayout);
         
-        StartMenuPanel startPanel = new StartMenuPanel(this, game);//start menu panel
-        allPanels.add(startPanel, "Start Menu");
-        
         frame.add(allPanels);//add panels to game frame window
         frame.setVisible(true);
-        panelLayout.show(allPanels, "Start Menu"); //change which panel showing at beginning
+        
+        startMenu();
+        
     }
     
     public void showPanel(String panelName) {
         panelLayout.show(allPanels, panelName);
     }
     
-    public void startGame() {
+    public void startMenu() {
+        StartMenuPanel startPanel = new StartMenuPanel(this, game);//start menu panel
+        allPanels.add(startPanel, "Start Menu");
+        panelLayout.show(allPanels, "Start Menu");
+    }
+    
+    public void playGame() {
         GamePanel gamePanel = new GamePanel(this, game);//game menu panel
         allPanels.add(gamePanel, "Game");
         panelLayout.show(allPanels, "Game");

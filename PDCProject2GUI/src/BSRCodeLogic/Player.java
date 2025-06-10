@@ -79,18 +79,5 @@ public class Player { // Controls all Player related mechanics, events and infor
     public void addHealth(int hp) { // Add health to player based on given HP
         this.health += hp;
     }
-//    
-//    @Override
-//    public boolean equals(Object obj) {
-//        if (this == obj) return true;
-//        if (obj == null || getClass() != obj.getClass()) return false;
-//        Player other = (Player) obj;
-//        return playerName.equalsIgnoreCase(other.playerName);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return playerName.toLowerCase().hashCode();
-//    }
 
 }
