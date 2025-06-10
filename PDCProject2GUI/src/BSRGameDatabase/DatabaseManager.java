@@ -37,7 +37,7 @@ public class DatabaseManager { // Structure of this Class borrowed from our labs
         if (this.conn == null) {
             try {
                 conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD); // Provide database connection details, attempt connection
-                System.out.println(URL + " Get Connected Successfully ....");
+                //System.out.println(URL + " Get Connected Successfully ....");
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
