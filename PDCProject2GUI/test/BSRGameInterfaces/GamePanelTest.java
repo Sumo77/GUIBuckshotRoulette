@@ -4,13 +4,8 @@
  */
 package BSRGameInterfaces;
 
-import BSRCodeLogic.GameLogic;
-import BSRCodeLogic.Player;
-import BSRCodeLogic.PowerUpManager;
-import BSRCodeLogic.Round;
-import BSRCodeLogic.ShootResult;
+import BSRCodeLogic.*;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -32,7 +27,7 @@ public class GamePanelTest {
      */
     @Test
     public void testShootPlayerSurvive() {
-        System.out.println("shootPlayer");
+        System.out.println("shootPlayer - Player survives");
 
         BuckshotRouletteGUI mainGUI = new BuckshotRouletteGUI();
         PowerUpManager powerUps = new PowerUpManager();
@@ -68,6 +63,9 @@ public class GamePanelTest {
         assertTrue(result); // Check for if turn complete, should be true as bullet shot
         assertTrue(testInstance.mainInfoLabel.getText().contains("BANG")); // Check for if there is a BANG message, means bullet was shot, should be true.
         
+        assertTrue(testGame.getAlivePlayers().get(0) == testTarget); // Check if player exists in alive players list, should be true
+        assertTrue(testTarget.checkHealth() == 3); // Check if player's health has been removed by 1, should be true
+        
         assertTrue(testInstance.playerButtons.containsKey(testTarget)); // Check for if player still exists in both hashmaps, it should be there and return true, since they havent died
         assertTrue(testInstance.playerPowerUps.containsKey(testTarget));
     }
@@ -77,7 +75,7 @@ public class GamePanelTest {
      */
     @Test
     public void testShootPlayerDie() {
-        System.out.println("shootPlayer");
+        System.out.println("shootPlayer - Player dies");
 
         BuckshotRouletteGUI mainGUI = new BuckshotRouletteGUI();
         PowerUpManager powerUps = new PowerUpManager();
@@ -110,8 +108,14 @@ public class GamePanelTest {
 
         boolean result = testInstance.shootPlayer(testTarget);
 
-        assertTrue(result); // Check for if turn complete, should be true because bullet shot
+        assertTrue(result); // Check for if turn complete, should be true as bullet shot
         assertTrue(testInstance.mainInfoLabel.getText().contains(testTarget.getUsername() + " has died!")); // Check for if there is a person died message, means bullet was shot, should be true.
+        
+        assertTrue(result); // Check for if turn complete, should be true as bullet shot
+        assertTrue(testInstance.mainInfoLabel.getText().contains("BANG")); // Check for if there is a BANG message, means bullet was shot, should be true.
+        
+        assertTrue(testTarget.checkHealth() == 0); // Check if player's health has been removed by 1, should be true
+        assertTrue(testGame.getAlivePlayers().get(0) == testTarget); // Check if player exists in alive players list, should be true
         
         assertFalse(testInstance.playerButtons.containsKey(testTarget)); // Check for if player still exists in both hashmaps, it should be removed and return false.
         assertFalse(testInstance.playerPowerUps.containsKey(testTarget));
@@ -123,7 +127,7 @@ public class GamePanelTest {
      */
     @Test
     public void testShootPlayerBlank() {
-        System.out.println("shootPlayer");
+        System.out.println("shootPlayer - Blank at other player");
 
         BuckshotRouletteGUI mainGUI = new BuckshotRouletteGUI();
         PowerUpManager powerUps = new PowerUpManager();
@@ -169,7 +173,7 @@ public class GamePanelTest {
      */
     @Test
     public void testShootSelfBlank() {
-        System.out.println("shootPlayer");
+        System.out.println("shootPlayer - Blank at self");
 
         BuckshotRouletteGUI mainGUI = new BuckshotRouletteGUI();
         PowerUpManager powerUps = new PowerUpManager();
@@ -223,80 +227,6 @@ public class GamePanelTest {
     }
 
     /**
-     * Test of setupWinnerLabel method, of class GamePanel.
-     */
-    @Test
-    public void testSetupWinnerLabel() {
-        System.out.println("setupWinnerLabel");
-        GamePanel instance = null;
-        instance.setupWinnerLabel();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setupShootButton method, of class GamePanel.
-     */
-    @Test
-    public void testSetupShootButton() {
-        System.out.println("setupShootButton");
-        GamePanel instance = null;
-        instance.setupShootButton();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of hideButtonFeatures method, of class GamePanel.
-     */
-    @Test
-    public void testHideButtonFeatures() {
-        System.out.println("hideButtonFeatures");
-        JButton button = null;
-        GamePanel instance = null;
-        instance.hideButtonFeatures(button);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of displayRounds method, of class GamePanel.
-     */
-    @Test
-    public void testDisplayRounds() {
-        System.out.println("displayRounds");
-        Graphics g = null;
-        GamePanel instance = null;
-        instance.displayRounds(g);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of showSmoke method, of class GamePanel.
-     */
-    @Test
-    public void testShowSmoke() {
-        System.out.println("showSmoke");
-        GamePanel instance = null;
-        instance.showSmoke();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of showExplosion method, of class GamePanel.
-     */
-    @Test
-    public void testShowExplosion() {
-        System.out.println("showExplosion");
-        GamePanel instance = null;
-        instance.showExplosion();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of playTurn method, of class GamePanel.
      */
     @Test
@@ -304,30 +234,6 @@ public class GamePanelTest {
         System.out.println("playTurn");
         GamePanel instance = null;
         instance.playTurn();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of showActionButtons method, of class GamePanel.
-     */
-    @Test
-    public void testShowActionButtons() {
-        System.out.println("showActionButtons");
-        GamePanel instance = null;
-        instance.showActionButtons();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of removeActionButtons method, of class GamePanel.
-     */
-    @Test
-    public void testRemoveActionButtons() {
-        System.out.println("removeActionButtons");
-        GamePanel instance = null;
-        instance.removeActionButtons();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -352,18 +258,6 @@ public class GamePanelTest {
         System.out.println("isWinner");
         GamePanel instance = null;
         instance.isWinner();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of exitGameButton method, of class GamePanel.
-     */
-    @Test
-    public void testExitGameButton() {
-        System.out.println("exitGameButton");
-        GamePanel instance = null;
-        instance.exitGameButton();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

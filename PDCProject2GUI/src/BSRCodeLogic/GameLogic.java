@@ -1,6 +1,5 @@
 package BSRCodeLogic;
 
-import java.util.Scanner;
 import java.util.ArrayList;
 
 import BSRGameDatabase.DatabaseManager;
