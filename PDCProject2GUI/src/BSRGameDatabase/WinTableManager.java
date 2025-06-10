@@ -125,7 +125,6 @@ public class WinTableManager { // Manages the WinTable Reading / Writing to and 
     }
     
     public ArrayList<String> displayWinsTable() { 
-        System.out.print(topPlayers);
         if (!topPlayers.isEmpty()) {
             topPlayers.clear(); // Clear the list for fresh data
         }
